@@ -1,46 +1,34 @@
-# Getting Started with Create React App
+# Bank Account Management
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Task description
 
-## Available Scripts
+Develop a web application for bank accounts management, so accounts can be managed (created, edited, searched and deleted) and fund transfers can be performed between accounts.
 
-In the project directory, you can run:
+## Requirements
 
-### `npm start`
+- Implementation has to be done in React with TypeScript
+- No security layer (authentication / authorization) needs to be provided
+- Program has to be runnable without a special software/container
+- The backend must be mocked and made possible to run locally along with the frontend
+- The minimal attributes to define an account are:
+- An owner ID (numeric)
+- A Currency (String)
+- A balance (numeric)
+- The minimal requirements for the fund transfer are:
+  - a fund transfer can be made between any two accounts
+  - these 2 accounts may have different currencies
+  - the balance of the debit account must be sufficient
+- The frontend must have input validation with clear error messages
+- The UI is expected to be user-friendly and have good graphic standards (you can use the theme of your choice and any pictures/logos/icons copyright free)
+- Code must be covered with tests
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Additional information
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- The code is expected to be of good quality and easy to maintain
+- As business specification is very light, use common sense in case of doubt
 
-### `npm test`
+## Run the app:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+In the frontend directory, you can run:
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### `npm dev`
