@@ -29,6 +29,10 @@ Develop a web application for bank accounts management, so accounts can be manag
 
 ## Run the app:
 
+You need JSON Server to run the app. Install JSON Server globally if you haven't already:
+
+### `npm install -g json-server`
+
 In the frontend directory, you can run:
 
-### `npm dev`
+### `npm run dev`
