@@ -3,6 +3,11 @@ import { toast } from "react-toastify";
 import { deleteAPI, getAPI, paths, postAPI } from "../../services";
 import { CurrencyCode } from "types/currencyTypes";
 
+export type HistoryBalance = {
+  date: Date;
+  balance: number;
+};
+
 export interface Account {
   id: number;
   ownerId: number;
@@ -10,6 +15,8 @@ export interface Account {
   lastName: string;
   currency: CurrencyCode;
   balance: number;
+  historyBalance: HistoryBalance[];
+  isDeleted: boolean;
 }
 
 const useAccounts = () => {
