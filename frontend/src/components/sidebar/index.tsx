@@ -25,14 +25,19 @@ import { IconType } from "react-icons";
 import { ReactText } from "react";
 
 interface LinkItemProps {
+  to: string;
   name: string;
   icon: IconType;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Dashboard", icon: FiHome },
-  { name: "Accounts", icon: FiFolder },
-  { name: "Fund Transfer", icon: FiDollarSign },
-  { name: "Deactivated Accounts", icon: FiFolderMinus },
+  { to: "/", name: "Dashboard", icon: FiHome },
+  { to: "/accounts", name: "Accounts", icon: FiFolder },
+  { to: "/fund-transfer", name: "Fund Transfer", icon: FiDollarSign },
+  {
+    to: "/deactivated-accounts",
+    name: "Deactivated Accounts",
+    icon: FiFolderMinus,
+  },
 ];
 
 export default function SidebarWithHeader({
@@ -92,7 +97,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} to={link.to}>
           {link.name}
         </NavItem>
       ))}
@@ -101,13 +106,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 };
 
 interface NavItemProps extends FlexProps {
+  to: string;
   icon: IconType;
   children: ReactText;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ to, icon, children, ...rest }: NavItemProps) => {
   return (
     <Link
-      href="#"
+      href={to}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
     >
