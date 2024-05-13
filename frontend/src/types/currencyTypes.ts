@@ -109,3 +109,7 @@ export const currencies: CurrencyInfo[] = [
   { code: "USD", symbol: "$" },
   { code: "ZAR", symbol: "R" },
 ];
+
+export interface ExchangeRates {
+  [currency: string]: number;
+}
