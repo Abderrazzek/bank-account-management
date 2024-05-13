@@ -3,14 +3,22 @@
     {
       "id": 1,
       "ownerId": 123,
+      "firstName": "Sarah",
+      "lastName": "Han",
       "currency": "USD",
-      "balance": 1000
+      "balance": 1000,
+      "historyBalance": [{ "date": "2024-05-14", "balance": 1000 }],
+      "isDeleted": false
     },
     {
       "id": 2,
       "ownerId": 456,
+      "firstName": "Jin",
+      "lastName": "Walter",
       "currency": "EUR",
-      "balance": 500
+      "balance": 500,
+      "historyBalance": [{ "date": "2024-05-14", "balance": 500 }],
+      "isDeleted": false
     }
   ]
 }
