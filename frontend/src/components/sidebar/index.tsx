@@ -14,6 +14,10 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import {
   FiHome,
@@ -163,6 +167,8 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const location = useLocation();
+  const isTabletOrLarger = useBreakpointValue({ base: false, md: true });
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -172,9 +178,29 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       bg={useColorModeValue("white", "gray.900")}
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent={{ base: "space-between", md: "flex-end" }}
+      justifyContent={{ base: "space-between", md: "flex-start" }}
       {...rest}
     >
+      {isTabletOrLarger && (
+        <Flex alignItems="center" px="4" py="2">
+          <Breadcrumb separator="›" fontSize="sm" fontWeight="semibold">
+            {location.pathname
+              .split("/")
+              .map((path: string, index: number, array: any) => {
+                const route = array.slice(0, index + 1).join("/");
+                const linkItem = LinkItems.find((item) => item.to === route);
+                if (!linkItem) return null;
+                return (
+                  <BreadcrumbItem key={index}>
+                    <BreadcrumbLink href={route}>
+                      {linkItem.name}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                );
+              })}
+          </Breadcrumb>
+        </Flex>
+      )}
       <IconButton
         display={{ base: "flex", md: "none" }}
         onClick={onOpen}
