@@ -1,7 +1,17 @@
-import "./App.css";
+import React from "react";
 
-function App() {
-  return <div className="App"></div>;
-}
+import SidebarWithHeader from "./components/sidebar";
+import AccountDetails from "layouts/accountDetails";
+
+const App = () => {
+  return (
+    <div className="App">
+      <SidebarWithHeader>
+        {/* <Accounts /> */}
+        <AccountDetails />
+      </SidebarWithHeader>
+    </div>
+  );
+};
 
 export default App;
