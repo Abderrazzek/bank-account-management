@@ -4,21 +4,32 @@ import SidebarWithHeader from "./components/sidebar";
 import AccountDetails from "layouts/accountDetails";
 import Dashboard from "layouts/dashboard";
 import Accounts from "layouts/accounts";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import DeactivatedAccounts from "layouts/deactivatedAccounts";
 import FundTransfer from "layouts/fundTransfer";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
     <div className="App">
-      <SidebarWithHeader>
-        <Routes>
-          <Route path="/" Component={Dashboard} />
-          <Route path="/accounts" Component={Accounts} />
-          <Route path="/fund-transfer" Component={FundTransfer} />
-          <Route path="/deactivated-accounts" Component={DeactivatedAccounts} />
-        </Routes>
-      </SidebarWithHeader>
+      <QueryClientProvider client={queryClient}>
+        <SidebarWithHeader>
+          <Routes>
+            <Route path="/" Component={Dashboard} />
+            <Route path="/accounts" Component={Accounts} />
+            <Route path="/accounts" Component={Accounts} />
+            <Route path="/accounts/:userId" Component={AccountDetails} />
+            <Route path="/fund-transfer" Component={FundTransfer} />
+            <Route
+              path="/deactivated-accounts"
+              Component={DeactivatedAccounts}
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </SidebarWithHeader>
+      </QueryClientProvider>
     </div>
   );
 };
