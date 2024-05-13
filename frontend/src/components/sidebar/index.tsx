@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { useLocation } from "react-router-dom";
 import {
   IconButton,
   Box,
@@ -46,11 +47,14 @@ export default function SidebarWithHeader({
   children: ReactNode;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const location = useLocation();
+
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
+        location={location}
       />
       <Drawer
         autoFocus={false}
@@ -62,7 +66,7 @@ export default function SidebarWithHeader({
         size="full"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent onClose={onClose} location={location} />
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
@@ -76,9 +80,10 @@ export default function SidebarWithHeader({
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
+  location: any;
 }
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({ onClose, location, ...rest }: SidebarProps) => {
   return (
     <Box
       transition="3s ease"
@@ -97,7 +102,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} to={link.to}>
+        <NavItem
+          key={link.name}
+          icon={link.icon}
+          to={link.to}
+          selected={location.pathname === link.to}
+        >
           {link.name}
         </NavItem>
       ))}
@@ -108,9 +118,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
   to: string;
   icon: IconType;
+  selected?: boolean;
   children: ReactText;
 }
-const NavItem = ({ to, icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ to, icon, children, selected, ...rest }: NavItemProps) => {
   return (
     <Link
       href={to}
@@ -125,9 +136,11 @@ const NavItem = ({ to, icon, children, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: "cyan.400",
+          bg: "cyan.600",
           color: "white",
         }}
+        bg={selected ? "cyan.400" : "transparent"}
+        color={selected ? "White" : "inherit"}
         {...rest}
       >
         {icon && (
