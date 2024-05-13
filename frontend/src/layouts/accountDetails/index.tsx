@@ -8,6 +8,7 @@ interface AccountDetailsProps {
 
 const AccountDetails: React.FC<AccountDetailsProps> = (props) => {
   // Add component logic here
+  // TODO: REDIRECT TO '/' IF THE ID IS UNDEFINED OR ISDESABLED=TRUE
 
   return (
     <div>
