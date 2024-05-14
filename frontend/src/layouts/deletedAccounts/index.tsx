@@ -1,7 +1,7 @@
 import React from "react";
 
-const DeactivatedAccounts: React.FC = () => {
+const DeletedAccounts: React.FC = () => {
   return <div>{/* Your dashboard content goes here */}</div>;
 };
 
-export default DeactivatedAccounts;
+export default DeletedAccounts;

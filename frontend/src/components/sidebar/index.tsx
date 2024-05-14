@@ -39,8 +39,8 @@ const LinkItems: Array<LinkItemProps> = [
   { to: "/accounts", name: "Accounts", icon: FiFolder },
   { to: "/fund-transfer", name: "Fund Transfer", icon: FiDollarSign },
   {
-    to: "/deactivated-accounts",
-    name: "Deactivated Accounts",
+    to: "/deleted-accounts",
+    name: "Deleted Accounts",
     icon: FiFolderMinus,
   },
 ];
