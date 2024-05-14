@@ -19,13 +19,7 @@ import {
   BreadcrumbLink,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import {
-  FiHome,
-  FiFolder,
-  FiDollarSign,
-  FiFolderMinus,
-  FiMenu,
-} from "react-icons/fi";
+import { FiFolder, FiDollarSign, FiFolderMinus, FiMenu } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
 
@@ -35,7 +29,6 @@ interface LinkItemProps {
   icon: IconType;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { to: "/", name: "Dashboard", icon: FiHome },
   { to: "/accounts", name: "Accounts", icon: FiFolder },
   { to: "/fund-transfer", name: "Fund Transfer", icon: FiDollarSign },
   {
@@ -110,11 +103,7 @@ const SidebarContent = ({ onClose, location, ...rest }: SidebarProps) => {
           key={link.name}
           icon={link.icon}
           to={link.to}
-          selected={
-            link.to === "/"
-              ? location.pathname === "/"
-              : location.pathname.startsWith(link.to)
-          }
+          selected={location.pathname.startsWith(link.to)}
         >
           {link.name}
         </NavItem>
