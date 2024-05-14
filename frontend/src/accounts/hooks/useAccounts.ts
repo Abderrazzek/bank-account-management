@@ -16,7 +16,7 @@ export interface Account {
   currency: CurrencyCode;
   balance: number;
   historyBalance: HistoryBalance[];
-  isDeleted: boolean;
+  isDeleted?: boolean;
 }
 
 const useAccounts = () => {

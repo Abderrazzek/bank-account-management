@@ -11,20 +11,21 @@ import {
 import * as Yup from "yup";
 
 import { CurrencyInfo, currencies } from "types/currencyTypes";
+import { Account } from "accounts/hooks/useAccounts";
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const onSubmit = (values: any) => {
-  sleep(300).then(() => {
-    window.alert(JSON.stringify(values, null, 2));
-  });
+type FormProps = {
+  isEditable?: boolean;
+  data?: Account;
+  onSubmit?: (values: Account) => void;
 };
 
-const initialValues = {
+const initialValues: Account = {
+  id: 0,
   ownerId: 0,
   firstName: "",
   lastName: "",
   currency: "EUR",
+  historyBalance: [],
   balance: 0,
 };
 
@@ -36,7 +37,11 @@ const validationSchema = Yup.object({
   balance: Yup.number().required().min(-200),
 });
 
-const Form = () => {
+const Form: React.FC<FormProps> = ({
+  isEditable = false,
+  data,
+  onSubmit = () => {},
+}) => {
   return (
     <Formik
       initialValues={initialValues}

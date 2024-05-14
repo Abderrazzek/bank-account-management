@@ -1,15 +1,23 @@
 // TODO OPTIMIZE CODE AND MAKE BOTH IN ONE COMPONENT
 
-import React from "react";
-import { useLocation } from "react-router-dom";
+import Form from "layouts/accountDetails/components/Form";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DeletedAccountDetails: React.FC = () => {
   const { state } = useLocation();
-  console.log("=====", state.data);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!state)
+      // TODO CALL API TO GET ACCOUNT/ID AND REDIRECT IF IT DOESN'T EXIT
+      navigate(`/accounts`);
+  }, []);
+
+  console.log("=====", !!state);
   return (
     <div>
-      <h1>Deleted Account Details</h1>
-      {/* Add your content here */}
+      <Form data={state?.data} />
     </div>
   );
 };
