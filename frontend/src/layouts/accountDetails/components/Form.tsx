@@ -37,17 +37,25 @@ const validationSchema = Yup.object({
   balance: Yup.number().required().min(-200),
 });
 
+const getCountryByCurrencyCode = (code: string): string => {
+  const currency = currencies.find((currency) => currency.code === code);
+  return currency ? currency.country : "";
+};
+
 const Form: React.FC<FormProps> = ({
   isEditable = false,
   data,
   onSubmit = () => {},
 }) => {
+  const formikProps = {
+    initialValues: data || initialValues,
+    onSubmit,
+    validationSchema,
+    enableReinitialize: true,
+  };
+
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
+    <Formik {...formikProps}>
       {({ handleSubmit, isValid }) => (
         <Box
           borderWidth="1px"
@@ -59,26 +67,57 @@ const Form: React.FC<FormProps> = ({
           as="form"
           onSubmit={handleSubmit}
         >
-          <NumberInputControl name="ownerId" label="Id" />
-          <InputControl name="firstName" label="First Name" />
-          <InputControl name="lastName" label="Last Name" />
-          <SelectControl
-            name="currency"
-            label="Currency"
-            selectProps={{ placeholder: "Select option" }}
-          >
-            {currencies.map((currency: CurrencyInfo) => (
-              <option key={currency.code} value={currency.code}>
-                {`${currency.code} - ${currency.country}`}
-              </option>
-            ))}
-          </SelectControl>
-          <NumberInputControl name="balance" label="Balance" />
+          <NumberInputControl
+            name="ownerId"
+            label="Id"
+            isReadOnly={!isEditable}
+          />
+          <InputControl
+            name="firstName"
+            label="First Name"
+            isReadOnly={!isEditable}
+          />
+          <InputControl
+            name="lastName"
+            label="Last Name"
+            isReadOnly={!isEditable}
+          />
+          {isEditable ? (
+            <SelectControl
+              name="currency"
+              label="Default currency"
+              selectProps={{ placeholder: "Select option" }}
+            >
+              {currencies.map((currency: CurrencyInfo) => (
+                <option key={currency.code} value={currency.code}>
+                  {`${currency.code} - ${currency.country}`}
+                </option>
+              ))}
+            </SelectControl>
+          ) : (
+            <InputControl
+              name="currency"
+              label="Default currency"
+              defaultValue={`${
+                formikProps.initialValues.currency
+              } - ${getCountryByCurrencyCode(
+                formikProps.initialValues.currency
+              )}`}
+              isReadOnly
+            />
+          )}
+          <NumberInputControl
+            name="balance"
+            label="Balance"
+            isReadOnly={!isEditable}
+          />
 
-          <ButtonGroup>
-            <SubmitButton isDisabled={!isValid}>Submit</SubmitButton>
-            <ResetButton>Reset</ResetButton>
-          </ButtonGroup>
+          {isEditable && (
+            <ButtonGroup>
+              <SubmitButton isDisabled={!isValid}>Submit</SubmitButton>
+              <ResetButton>Reset</ResetButton>
+            </ButtonGroup>
+          )}
         </Box>
       )}
     </Formik>
