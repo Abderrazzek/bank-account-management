@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Flex } from "@chakra-ui/react"; // Chakra UI components
 import { FiEye } from "react-icons/fi";
 import { AgGridReact } from "ag-grid-react";
@@ -10,13 +11,26 @@ import { Account } from "accounts/hooks/useAccounts";
 const DeletedAccounts: React.FC = () => {
   const { accounts, loadAccounts } = useAccountDetails();
   const [rowData, setRowData] = useState<Account[]>(accounts);
+  const navigate = useNavigate();
+  //TODO getDeletedAccounts and list them here
 
-  // getDeletedAccounts and list them here
+  const ActionButtonsComponent: React.FC<any> = ({ data }) => {
+    const handleViewClick = () => {
+      navigate(`/deleted-accounts/${data.id}`, {
+        state: {
+          data,
+        },
+      });
+    };
 
-  const ActionButtonsComponent: React.FC<any> = (props) => {
     return (
       <Flex justify="space-between" align="center" h="100%">
-        <Button leftIcon={<FiEye />} size="sm" variant="link">
+        <Button
+          leftIcon={<FiEye />}
+          size="sm"
+          variant="link"
+          onClick={handleViewClick}
+        >
           View
         </Button>
       </Flex>
@@ -44,6 +58,9 @@ const DeletedAccounts: React.FC = () => {
       field: "actions",
       filter: false,
       cellRenderer: ActionButtonsComponent,
+      cellRendererParams: {
+        data: rowData,
+      },
       flex: 1,
     },
   ]);

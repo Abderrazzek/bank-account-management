@@ -7,6 +7,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import DeletedAccounts from "layouts/deletedAccounts";
 import FundTransfer from "layouts/fundTransfer";
+import DeletedAccountDetails from "layouts/deletedAccountDetails";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,10 @@ const App = () => {
             <Route path="/accounts/:userId" Component={AccountDetails} />
             <Route path="/fund-transfer" Component={FundTransfer} />
             <Route path="/deleted-accounts" Component={DeletedAccounts} />
+            <Route
+              path="/deleted-accounts/:userId"
+              Component={DeletedAccountDetails}
+            />
             <Route path="*" element={<Navigate to="/accounts" replace />} />
           </Routes>
         </SidebarWithHeader>
