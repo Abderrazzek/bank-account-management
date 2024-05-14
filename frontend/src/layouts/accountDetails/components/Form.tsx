@@ -14,7 +14,7 @@ import { CurrencyInfo, currencies } from "types/currencyTypes";
 import { Account } from "accounts/hooks/useAccounts";
 
 type FormProps = {
-  isEditable?: boolean;
+  isReadOnly?: boolean;
   data?: Account;
   onSubmit?: (values: Account) => void;
 };
@@ -43,7 +43,7 @@ const getCountryByCurrencyCode = (code: string): string => {
 };
 
 const Form: React.FC<FormProps> = ({
-  isEditable = false,
+  isReadOnly = true,
   data,
   onSubmit = () => {},
 }) => {
@@ -70,19 +70,19 @@ const Form: React.FC<FormProps> = ({
           <NumberInputControl
             name="ownerId"
             label="Id"
-            isReadOnly={!isEditable}
+            isReadOnly={isReadOnly}
           />
           <InputControl
             name="firstName"
             label="First Name"
-            isReadOnly={!isEditable}
+            isReadOnly={isReadOnly}
           />
           <InputControl
             name="lastName"
             label="Last Name"
-            isReadOnly={!isEditable}
+            isReadOnly={isReadOnly}
           />
-          {isEditable ? (
+          {!isReadOnly ? (
             <SelectControl
               name="currency"
               label="Default currency"
@@ -109,10 +109,10 @@ const Form: React.FC<FormProps> = ({
           <NumberInputControl
             name="balance"
             label="Balance"
-            isReadOnly={!isEditable}
+            isReadOnly={isReadOnly}
           />
 
-          {isEditable && (
+          {!isReadOnly && (
             <ButtonGroup>
               <SubmitButton isDisabled={!isValid}>Submit</SubmitButton>
               <ResetButton>Reset</ResetButton>
