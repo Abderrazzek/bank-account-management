@@ -1,6 +1,5 @@
 import React from "react";
-
-import AccountFundTransfer from "./components/AccountFundTransfer";
+import Form from "./components/Form";
 
 interface AccountDetailsProps {
   // Define props here
@@ -12,7 +11,7 @@ const AccountDetails: React.FC<AccountDetailsProps> = (props) => {
 
   return (
     <div>
-      <AccountFundTransfer />
+      <Form />
     </div>
   );
 };
