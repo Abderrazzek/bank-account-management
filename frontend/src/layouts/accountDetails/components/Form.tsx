@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Box, ButtonGroup } from "@chakra-ui/react";
 import { Formik } from "formik";
 import {
@@ -7,8 +8,9 @@ import {
   SelectControl,
   SubmitButton,
 } from "formik-chakra-ui";
-import * as React from "react";
 import * as Yup from "yup";
+
+import { CurrencyInfo, currencies } from "types/currencyTypes";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -60,9 +62,11 @@ const Form = () => {
             label="Currency"
             selectProps={{ placeholder: "Select option" }}
           >
-            <option value="EUR">EUR</option>
-            <option value="USD">USD</option>
-            <option value="DNT">DNT</option>
+            {currencies.map((currency: CurrencyInfo) => (
+              <option key={currency.code} value={currency.code}>
+                {`${currency.code} - ${currency.country}`}
+              </option>
+            ))}
           </SelectControl>
           <NumberInputControl name="balance" label="Balance" />
 
