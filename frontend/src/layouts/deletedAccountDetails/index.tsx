@@ -17,7 +17,6 @@ const DeletedAccountDetails: React.FC = () => {
       navigate(`/accounts`);
   }, []);
 
-  console.log("=====", !!state);
   return (
     <div>
       <Heading fontWeight="medium" size="md">

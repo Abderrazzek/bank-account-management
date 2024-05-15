@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Form from "./components/Form";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface AccountDetailsProps {
   // Define props here
 }
 
 const AccountDetails: React.FC<AccountDetailsProps> = (props) => {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!state)
+      // TODO CALL API TO GET ACCOUNT/ID AND REDIRECT IF IT DOESN'T EXIT
+      // TODO REMOVE THE STATE SENT ON NAVIGATION AND HANDLE IT ONLY WITH THE API WAY
+      navigate(`/accounts`);
+  }, []);
+
   // Add component logic here
   // TODO: REDIRECT TO '/' IF THE ID IS UNDEFINED OR ISDESABLED=TRUE
   const onSubmit = (values: any) => {
@@ -15,7 +26,11 @@ const AccountDetails: React.FC<AccountDetailsProps> = (props) => {
 
   return (
     <div>
-      <Form />
+      <Form
+        onSubmit={onSubmit}
+        data={state.data}
+        isReadOnly={state.isReadOnly}
+      />
     </div>
   );
 };

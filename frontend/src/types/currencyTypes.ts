@@ -147,11 +147,6 @@ export const currencies: CurrencyInfo[] = [
     country: "Indonesia",
   },
   {
-    code: "ILS",
-    symbol: "₪",
-    country: "Israel",
-  },
-  {
     code: "INR",
     symbol: "₹",
     country: "India",

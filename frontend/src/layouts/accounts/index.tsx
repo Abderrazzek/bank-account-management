@@ -22,6 +22,16 @@ const Accounts: React.FC = () => {
       });
     };
 
+    const handleEditClick = () => {
+      navigate(`/accounts/${data.id}`, {
+        state: {
+          data,
+          isReadOnly: false,
+          // handleDeleteClick,
+        },
+      });
+    };
+
     const handleDeleteClick = () => {
       //TODO: handle Delete Account using data.id
     };
@@ -36,7 +46,12 @@ const Accounts: React.FC = () => {
         >
           View
         </Button>
-        <Button leftIcon={<FiEdit />} size="sm" variant="link">
+        <Button
+          leftIcon={<FiEdit />}
+          size="sm"
+          variant="link"
+          onClick={handleEditClick}
+        >
           Edit
         </Button>
         <Button
