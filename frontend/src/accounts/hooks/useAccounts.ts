@@ -15,7 +15,7 @@ export interface Account {
   lastName: string;
   currency: CurrencyCode;
   balance: number;
-  historyBalance: HistoryBalance[];
+  historyBalance: Record<string, string | number>[];
   isDeleted?: boolean;
 }
 
