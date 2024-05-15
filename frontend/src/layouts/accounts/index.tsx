@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Button, Flex } from "@chakra-ui/react"; // Chakra UI components
-import { FiEye, FiEdit, FiTrash } from "react-icons/fi";
+import { Button, Flex, Box } from "@chakra-ui/react"; // Chakra UI components
+import { FiEye, FiEdit, FiTrash, FiPlus } from "react-icons/fi";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -95,8 +95,22 @@ const Accounts: React.FC = () => {
   const paginationPageSize = 10;
   const paginationPageSizeSelector = [10, 50, 100];
 
+  const handleNewAccountClick = () => {
+    // Redirect to create new account page
+    navigate("/accounts/new");
+  };
+
   return (
     <div>
+      <Box mb={4} display="flex" justifyContent="flex-end">
+        <Button
+          colorScheme="teal"
+          leftIcon={<FiPlus />}
+          onClick={handleNewAccountClick}
+        >
+          Create New Account
+        </Button>
+      </Box>
       <div
         className="ag-theme-alpine-dark" // applying the grid theme
         style={{ height: 500 }} // the grid will fill the size of the parent container
