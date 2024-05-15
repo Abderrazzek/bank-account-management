@@ -6,21 +6,45 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import useAccountDetails from "accounts/details/hooks/useAccountDetails";
 import { Account } from "accounts/hooks/useAccounts";
+import { useNavigate } from "react-router-dom";
 
 const Accounts: React.FC = () => {
   const { accounts, loadAccounts } = useAccountDetails();
   const [rowData, setRowData] = useState<Account[]>(accounts);
+  const navigate = useNavigate();
 
-  const ActionButtonsComponent: React.FC<any> = (props) => {
+  const ActionButtonsComponent: React.FC<any> = ({ data }) => {
+    const handleViewClick = () => {
+      navigate(`/accounts/${data.id}`, {
+        state: {
+          data,
+        },
+      });
+    };
+
+    const handleDeleteClick = () => {
+      //TODO: handle Delete Account using data.id
+    };
+
     return (
       <Flex justify="space-between" align="center" h="100%">
-        <Button leftIcon={<FiEye />} size="sm" variant="link">
+        <Button
+          leftIcon={<FiEye />}
+          size="sm"
+          variant="link"
+          onClick={handleViewClick}
+        >
           View
         </Button>
         <Button leftIcon={<FiEdit />} size="sm" variant="link">
           Edit
         </Button>
-        <Button leftIcon={<FiTrash />} size="sm" variant="link">
+        <Button
+          leftIcon={<FiTrash />}
+          size="sm"
+          variant="link"
+          onClick={handleDeleteClick}
+        >
           Delete
         </Button>
       </Flex>
