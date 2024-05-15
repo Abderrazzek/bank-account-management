@@ -23,7 +23,7 @@ const DeletedAccountDetails: React.FC = () => {
         Account Details
       </Heading>
       <Form data={state?.data} />
-      {state?.data?.historyBalance?.length > 2 && (
+      {state?.data?.historyBalance?.length > 1 && (
         <LineChart data={state?.data?.historyBalance} />
       )}
     </div>
