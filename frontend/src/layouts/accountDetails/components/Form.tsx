@@ -169,7 +169,8 @@ const Form: React.FC<FormProps> = ({
         confirmBtnText="Delete"
         onConfirm={() => {
           onDelete();
-          setIsModalEditOpen(false); // Close Edit modal after submitting
+          setIsModalDeleteOpen(false);
+          //TODO REDIRECTION TO ACCOUNTS
         }}
       />
     </>

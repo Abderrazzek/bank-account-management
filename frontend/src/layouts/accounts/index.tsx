@@ -7,13 +7,42 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import useAccountDetails from "accounts/details/hooks/useAccountDetails";
 import { Account } from "accounts/hooks/useAccounts";
 import { useNavigate } from "react-router-dom";
+import ConfirmationModal from "components/confirmationModal";
 
 const Accounts: React.FC = () => {
-  const { accounts, loadAccounts } = useAccountDetails();
+  const { accounts, loadAccounts, removeAccount } = useAccountDetails();
   const [rowData, setRowData] = useState<Account[]>(accounts);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
+  const [accountToDelete, setAccountToDelete] = useState<Account | null>(null);
   const navigate = useNavigate();
 
-  const ActionButtonsComponent: React.FC<any> = ({ data }) => {
+  useEffect(() => {
+    loadAccounts();
+  }, [loadAccounts]);
+
+  useEffect(() => {
+    setRowData(accounts);
+  }, [accounts]);
+
+  const handleNewAccountClick = () => {
+    // Redirect to create new account page
+    navigate("/accounts/new");
+  };
+
+  const handleDeleteClick = (account: Account) => {
+    setAccountToDelete(account);
+    setIsModalDeleteOpen(true);
+  };
+
+  const onDelete = async () => {
+    if (accountToDelete) {
+      await removeAccount(accountToDelete.id);
+      // Refresh accounts after deletion
+      loadAccounts();
+    }
+  };
+
+  const ActionButtonsComponent: React.FC<{ data: Account }> = ({ data }) => {
     const handleViewClick = () => {
       navigate(`/accounts/${data.id}`, {
         state: {
@@ -30,10 +59,6 @@ const Accounts: React.FC = () => {
           // handleDeleteClick,
         },
       });
-    };
-
-    const handleDeleteClick = () => {
-      //TODO: handle Delete Account using data.id
     };
 
     return (
@@ -58,7 +83,7 @@ const Accounts: React.FC = () => {
           leftIcon={<FiTrash />}
           size="sm"
           variant="link"
-          onClick={handleDeleteClick}
+          onClick={() => handleDeleteClick(data)}
         >
           Delete
         </Button>
@@ -98,22 +123,9 @@ const Accounts: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    loadAccounts();
-  }, [loadAccounts]);
-
-  useEffect(() => {
-    setRowData(accounts);
-  }, [accounts]);
-
   const pagination = true;
   const paginationPageSize = 10;
   const paginationPageSizeSelector = [10, 50, 100];
-
-  const handleNewAccountClick = () => {
-    // Redirect to create new account page
-    navigate("/accounts/new");
-  };
 
   return (
     <div>
@@ -139,6 +151,16 @@ const Accounts: React.FC = () => {
           paginationPageSizeSelector={paginationPageSizeSelector}
         />
       </div>
+      <ConfirmationModal
+        isOpen={isModalDeleteOpen}
+        onClose={() => setIsModalDeleteOpen(false)}
+        text="Do you really want to delete this account?"
+        confirmBtnText="Delete"
+        onConfirm={() => {
+          onDelete();
+          setIsModalDeleteOpen(false); // Close Edit modal after submitting
+        }}
+      />
     </div>
   );
 };
