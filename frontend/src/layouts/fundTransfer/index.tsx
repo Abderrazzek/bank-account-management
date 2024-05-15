@@ -7,10 +7,12 @@ import {
   SubmitButton,
 } from "formik-chakra-ui";
 import * as React from "react";
+import { CurrencyInfo, currencies } from "types/currencyTypes";
 import * as Yup from "yup";
 
+//TODO GET ALL ACCOUNTS
+// TODO CREATE ACCOUNTS IDS ARRAY FROM THEM
 const accountIds = [1, 2, 3]; // Example account IDs
-const currencies = ["EUR", "USD", "DNT"]; // Example currencies
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -94,12 +96,12 @@ const FundTransfer = () => {
           </SelectControl>
           <SelectControl
             name="currency"
-            label="Currency"
+            label="Default currency"
             selectProps={{ placeholder: "Select currency" }}
           >
-            {currencies.map((currency) => (
-              <option key={currency} value={currency}>
-                {currency}
+            {currencies.map((currency: CurrencyInfo) => (
+              <option key={currency.code} value={currency.code}>
+                {`${currency.code} - ${currency.country}`}
               </option>
             ))}
           </SelectControl>
