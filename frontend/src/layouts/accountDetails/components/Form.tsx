@@ -55,14 +55,6 @@ const Form: React.FC<FormProps> = ({
     React.useState<boolean>(false);
   const [editedValues, setEditedValues] = React.useState<Account | null>(null); // Track edited values
 
-  const onCloseModalEdit = () => {
-    setIsModalEditOpen(false);
-  };
-
-  const onCloseModalDelete = () => {
-    setIsModalDeleteOpen(false);
-  };
-
   const formikProps = {
     initialValues: data || initialValues,
     onSubmit: (values: Account) => {
@@ -77,7 +69,7 @@ const Form: React.FC<FormProps> = ({
   return (
     <>
       <Formik {...formikProps}>
-        {({ handleSubmit, isValid }) => (
+        {({ handleSubmit, isValid, dirty }) => (
           <Box
             borderWidth="1px"
             rounded="lg"
@@ -147,7 +139,12 @@ const Form: React.FC<FormProps> = ({
 
             {!isReadOnly && (
               <ButtonGroup>
-                <SubmitButton isDisabled={!isValid}>Submit</SubmitButton>
+                <SubmitButton
+                  isDisabled={!isValid || !dirty}
+                  isLoading={isModalEditOpen}
+                >
+                  Submit
+                </SubmitButton>
                 <ResetButton>Reset</ResetButton>
               </ButtonGroup>
             )}
@@ -157,22 +154,22 @@ const Form: React.FC<FormProps> = ({
       {editedValues && ( // Render Edit modal if editedValues exist
         <ConfirmationModal
           isOpen={isModalEditOpen}
-          onClose={onCloseModalEdit}
+          onClose={() => setIsModalEditOpen(false)}
           text="Are you sure you want to submit changes?"
           onConfirm={() => {
             onSubmit(editedValues); // Call onSubmit with editedValues
-            onCloseModalEdit(); // Close Edit modal after submitting
+            setIsModalEditOpen(false); // Close Edit modal after submitting
           }}
         />
       )}
       <ConfirmationModal
         isOpen={isModalDeleteOpen}
-        onClose={onCloseModalDelete}
+        onClose={() => setIsModalDeleteOpen(false)}
         text="Do you really want to delete this account?"
         confirmBtnText="Delete"
         onConfirm={() => {
           onDelete();
-          onCloseModalEdit(); // Close Edit modal after submitting
+          setIsModalEditOpen(false); // Close Edit modal after submitting
         }}
       />
     </>
