@@ -1,6 +1,6 @@
 import { Box, ButtonGroup } from "@chakra-ui/react";
 import ConfirmationModal from "components/confirmationModal";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import {
   NumberInputControl,
   ResetButton,
@@ -13,52 +13,73 @@ import * as Yup from "yup";
 
 //TODO GET ALL ACCOUNTS
 // TODO CREATE ACCOUNTS IDS ARRAY FROM THEM
-const accountIds = [1, 2, 3]; // Example account IDs
+const accountIds: number[] = [1, 2, 3]; // Example account IDs
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
-const onSubmit = (values: any) => {
-  sleep(300).then(() => {
-    window.alert(JSON.stringify(values, null, 2));
+interface FormValues {
+  sender: number;
+  receiver: number;
+  currency: string;
+  amount: number;
+}
+
+const FundTransfer: React.FC = () => {
+  const [showConfirmationModal, setShowConfirmationModal] =
+    React.useState<boolean>(false);
+  const [formValues, setFormValues] = React.useState<FormValues | null>(null);
+
+  const onSubmit = (values: FormValues, helpers: FormikHelpers<FormValues>) => {
+    setFormValues(values);
+    setShowConfirmationModal(true);
+    helpers.setSubmitting(false);
+  };
+
+  const handleConfirmation = () => {
+    if (formValues) {
+      sleep(300).then(() => {
+        window.alert(JSON.stringify(formValues, null, 2));
+      });
+    }
+    setShowConfirmationModal(false);
+  };
+
+  const initialValues: FormValues = {
+    sender: 0,
+    receiver: 0,
+    currency: "",
+    amount: 0,
+  };
+
+  const validationSchema = Yup.object({
+    sender: Yup.number()
+      .required()
+      .test(
+        "notSameAsReceiver",
+        "Sender and receiver cannot be the same account",
+        function (value) {
+          const receiver = this.parent.receiver;
+          return value !== receiver;
+        }
+      ),
+    receiver: Yup.number()
+      .required()
+      .test(
+        "notSameAsSender",
+        "Sender and receiver cannot be the same account",
+        function (value) {
+          const sender = this.parent.sender;
+          return value !== sender;
+        }
+      ),
+    currency: Yup.string().required(),
+    amount: Yup.number()
+      .required()
+      .min(0)
+      .moreThan(0, "Amount must be greater than 0"),
   });
-};
 
-const initialValues = {
-  sender: 0,
-  receiver: 0,
-  currency: "",
-  amount: 0,
-};
-
-const validationSchema = Yup.object({
-  sender: Yup.number()
-    .required()
-    .test(
-      "notSameAsReceiver",
-      "Sender and receiver cannot be the same account",
-      function (value) {
-        const receiver = this.parent.receiver;
-        return value !== receiver;
-      }
-    ),
-  receiver: Yup.number()
-    .required()
-    .test(
-      "notSameAsSender",
-      "Sender and receiver cannot be the same account",
-      function (value) {
-        const sender = this.parent.sender;
-        return value !== sender;
-      }
-    ),
-  currency: Yup.string().required(),
-  amount: Yup.number()
-    .required()
-    .min(0)
-    .moreThan(0, "Amount must be greater than 0"),
-});
-
-const FundTransfer = () => {
   return (
     <>
       <Formik
@@ -121,9 +142,9 @@ const FundTransfer = () => {
       </Formik>
       <ConfirmationModal
         text="Are you sure you want to proceed this fund transfer?"
-        onClose={() => {}}
-        isOpen={false}
-        onConfirm={() => {}}
+        onClose={() => setShowConfirmationModal(false)}
+        isOpen={showConfirmationModal}
+        onConfirm={handleConfirmation}
       />
     </>
   );
