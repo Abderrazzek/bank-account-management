@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import Form from "./components/Form";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Heading } from "@chakra-ui/react";
+import LineChart from "components/lineChart";
 
 interface AccountDetailsProps {
   // Define props here
@@ -26,11 +28,17 @@ const AccountDetails: React.FC<AccountDetailsProps> = (props) => {
 
   return (
     <div>
+      <Heading fontWeight="medium" size="md">
+        Account Details
+      </Heading>
       <Form
         onSubmit={onSubmit}
         data={state.data}
         isReadOnly={state.isReadOnly}
       />
+      {state?.data?.historyBalance?.length > 1 && (
+        <LineChart data={state?.data?.historyBalance} />
+      )}
     </div>
   );
 };
