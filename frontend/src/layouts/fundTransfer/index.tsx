@@ -1,4 +1,5 @@
 import { Box, ButtonGroup } from "@chakra-ui/react";
+import ConfirmationModal from "components/confirmationModal";
 import { Formik } from "formik";
 import {
   NumberInputControl,
@@ -51,69 +52,80 @@ const validationSchema = Yup.object({
       }
     ),
   currency: Yup.string().required(),
-  amount: Yup.number().required().min(0),
+  amount: Yup.number()
+    .required()
+    .min(0)
+    .moreThan(0, "Amount must be greater than 0"),
 });
 
 const FundTransfer = () => {
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
-      {({ handleSubmit, isValid }) => (
-        <Box
-          borderWidth="1px"
-          rounded="lg"
-          shadow="1px 1px 3px rgba(0,0,0,0.3)"
-          maxWidth={800}
-          p={6}
-          m="10px auto"
-          as="form"
-          onSubmit={handleSubmit}
-        >
-          <SelectControl
-            name="sender"
-            label="Sender"
-            selectProps={{ placeholder: "Select account" }}
+    <>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validationSchema={validationSchema}
+      >
+        {({ handleSubmit, isValid }) => (
+          <Box
+            borderWidth="1px"
+            rounded="lg"
+            shadow="1px 1px 3px rgba(0,0,0,0.3)"
+            maxWidth={800}
+            p={6}
+            m="10px auto"
+            as="form"
+            onSubmit={handleSubmit}
           >
-            {accountIds.map((id) => (
-              <option key={id} value={id}>
-                Account {id}
-              </option>
-            ))}
-          </SelectControl>
-          <SelectControl
-            name="receiver"
-            label="Receiver"
-            selectProps={{ placeholder: "Select account" }}
-          >
-            {accountIds.map((id) => (
-              <option key={id} value={id}>
-                Account {id}
-              </option>
-            ))}
-          </SelectControl>
-          <SelectControl
-            name="currency"
-            label="Default currency"
-            selectProps={{ placeholder: "Select currency" }}
-          >
-            {currencies.map((currency: CurrencyInfo) => (
-              <option key={currency.code} value={currency.code}>
-                {`${currency.code} - ${currency.country}`}
-              </option>
-            ))}
-          </SelectControl>
-          <NumberInputControl name="amount" label="Amount" />
+            <SelectControl
+              name="sender"
+              label="Sender"
+              selectProps={{ placeholder: "Select account" }}
+            >
+              {accountIds.map((id) => (
+                <option key={id} value={id}>
+                  Account {id}
+                </option>
+              ))}
+            </SelectControl>
+            <SelectControl
+              name="receiver"
+              label="Receiver"
+              selectProps={{ placeholder: "Select account" }}
+            >
+              {accountIds.map((id) => (
+                <option key={id} value={id}>
+                  Account {id}
+                </option>
+              ))}
+            </SelectControl>
+            <SelectControl
+              name="currency"
+              label="Default currency"
+              selectProps={{ placeholder: "Select currency" }}
+            >
+              {currencies.map((currency: CurrencyInfo) => (
+                <option key={currency.code} value={currency.code}>
+                  {`${currency.code} - ${currency.country}`}
+                </option>
+              ))}
+            </SelectControl>
+            <NumberInputControl name="amount" label="Amount" />
 
-          <ButtonGroup>
-            <SubmitButton isDisabled={!isValid}>Submit</SubmitButton>
-            <ResetButton>Reset</ResetButton>
-          </ButtonGroup>
-        </Box>
-      )}
-    </Formik>
+            <ButtonGroup>
+              <SubmitButton isDisabled={!isValid}>Submit</SubmitButton>
+              <ResetButton>Reset</ResetButton>
+            </ButtonGroup>
+          </Box>
+        )}
+      </Formik>
+      <ConfirmationModal
+        text="Are you sure you want to proceed this fund transfer?"
+        onClose={() => {}}
+        isOpen={false}
+        onConfirm={() => {}}
+      />
+    </>
   );
 };
 
