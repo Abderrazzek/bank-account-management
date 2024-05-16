@@ -1,4 +1,4 @@
-import { ExchangeRates } from "types/currencyTypes";
+import { ExchangeRates } from "modules/shared/models/currency";
 
 export function convertCurrency(
   exchangeRates: ExchangeRates,

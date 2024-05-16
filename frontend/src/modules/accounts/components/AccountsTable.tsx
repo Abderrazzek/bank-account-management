@@ -7,7 +7,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import useAccountDetails from "accounts/details/hooks/useAccountDetails";
 import { Account } from "accounts/hooks/useAccounts";
 import { useNavigate } from "react-router-dom";
-import ConfirmationModal from "components/confirmationModal";
+import ConfirmationModal from "modules/shared/components/ConfirmationModal";
 import TableActionButtons from "components/tableActionButtons/TableActionButtons";
 
 interface Props {

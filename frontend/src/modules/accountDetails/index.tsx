@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import Form from "./components/Form";
+import Form from "../../modules/accountDetails/components/Form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Heading } from "@chakra-ui/react";
-import LineChart from "components/lineChart";
+import LineChart from "modules/accountDetails/components/LineChart";
 
 interface AccountDetailsProps {
   // Define props here
