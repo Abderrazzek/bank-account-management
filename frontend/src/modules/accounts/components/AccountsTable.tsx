@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Box } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { AgGridReact } from "ag-grid-react";
@@ -8,7 +8,7 @@ import useAccountDetails from "accounts/details/hooks/useAccountDetails";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "modules/shared/components/ConfirmationModal";
 import { Account } from "../models";
-import TableActionButtons from "./TableActionButtons";
+import { usePagination } from "../hooks";
 
 interface Props {
   isDeletedAccounts?: boolean;
@@ -19,6 +19,7 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
   const [rowData, setRowData] = useState<Account[]>(accounts);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
   const [accountToDelete, setAccountToDelete] = useState<Account | null>(null);
+  const { defaultColDef, colDefs } = usePagination();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,44 +47,6 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
       loadAccounts();
     }
   };
-
-  // Column Definitions: Defines the columns to be displayed.
-  const [colDefs] = useState<any[]>([
-    {
-      field: "ownerId",
-      filter: true,
-      flex: 1,
-    },
-    {
-      field: "currency",
-      filter: true,
-      flex: 1,
-    },
-    {
-      field: "balance",
-      filter: true,
-      flex: 1,
-    },
-    {
-      field: "actions",
-      filter: false,
-      cellRenderer: (params: any) => (
-        <TableActionButtons
-          data={params.data}
-          isDeletedAccounts={isDeletedAccounts}
-          handleDeleteClick={() => handleDeleteClick}
-        />
-      ),
-      flex: 1,
-    },
-  ]);
-
-  const defaultColDef = useMemo(() => {
-    return {
-      filter: "agTextColumnFilter",
-      floatingFilter: true,
-    };
-  }, []);
 
   const pagination = true;
   const paginationPageSize = 10;
