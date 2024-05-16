@@ -11,8 +11,8 @@ import {
 import * as Yup from "yup";
 
 import { CurrencyInfo, currencies } from "modules/shared/models/currency";
-import { Account } from "accounts/hooks/useAccounts";
 import ConfirmationModal from "modules/shared/components/ConfirmationModal";
+import { Account } from "modules/accounts/models";
 
 type FormProps = {
   isReadOnly?: boolean;

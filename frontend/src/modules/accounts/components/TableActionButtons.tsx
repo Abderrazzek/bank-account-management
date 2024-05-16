@@ -3,8 +3,8 @@
 import React from "react";
 import { Button, Flex } from "@chakra-ui/react";
 import { FiEye, FiEdit, FiTrash } from "react-icons/fi";
-import { Account } from "accounts/hooks/useAccounts";
 import { useNavigate } from "react-router-dom";
+import { Account } from "../models";
 
 const TableActionButtons: React.FC<{
   data: Account;

@@ -5,10 +5,10 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import useAccountDetails from "accounts/details/hooks/useAccountDetails";
-import { Account } from "accounts/hooks/useAccounts";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "modules/shared/components/ConfirmationModal";
-import TableActionButtons from "components/tableActionButtons/TableActionButtons";
+import { Account } from "../models";
+import TableActionButtons from "./TableActionButtons";
 
 interface Props {
   isDeletedAccounts?: boolean;
