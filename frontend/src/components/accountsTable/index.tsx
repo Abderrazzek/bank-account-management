@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Button, Flex, Box } from "@chakra-ui/react";
-import { FiEye, FiEdit, FiTrash, FiPlus } from "react-icons/fi";
+import { Button, Box } from "@chakra-ui/react";
+import { FiPlus } from "react-icons/fi";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -8,6 +8,7 @@ import useAccountDetails from "accounts/details/hooks/useAccountDetails";
 import { Account } from "accounts/hooks/useAccounts";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "components/confirmationModal";
+import TableActionButtons from "components/tableActionButtons/TableActionButtons";
 
 interface Props {
   isDeletedAccounts?: boolean;
@@ -46,59 +47,6 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
     }
   };
 
-  const ActionButtonsComponent: React.FC<{ data: Account }> = ({ data }) => {
-    const handleViewClick = () => {
-      navigate(`/${isDeletedAccounts ? "deleted-" : ""}accounts/${data.id}`, {
-        state: {
-          data,
-        },
-      });
-    };
-
-    const handleEditClick = () => {
-      navigate(`/accounts/${data.id}`, {
-        state: {
-          data,
-          isReadOnly: false,
-          // handleDeleteClick,
-        },
-      });
-    };
-
-    return (
-      <Flex justify="space-between" align="center" h="100%">
-        <Button
-          leftIcon={<FiEye />}
-          size="sm"
-          variant="link"
-          onClick={handleViewClick}
-        >
-          View
-        </Button>
-        {!isDeletedAccounts && (
-          <>
-            <Button
-              leftIcon={<FiEdit />}
-              size="sm"
-              variant="link"
-              onClick={handleEditClick}
-            >
-              Edit
-            </Button>
-            <Button
-              leftIcon={<FiTrash />}
-              size="sm"
-              variant="link"
-              onClick={() => handleDeleteClick(data)}
-            >
-              Delete
-            </Button>
-          </>
-        )}
-      </Flex>
-    );
-  };
-
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs] = useState<any[]>([
     {
@@ -119,7 +67,13 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
     {
       field: "actions",
       filter: false,
-      cellRenderer: ActionButtonsComponent,
+      cellRenderer: (params: any) => (
+        <TableActionButtons
+          data={params.data}
+          isDeletedAccounts={isDeletedAccounts}
+          handleDeleteClick={() => handleDeleteClick}
+        />
+      ),
       flex: 1,
     },
   ]);
