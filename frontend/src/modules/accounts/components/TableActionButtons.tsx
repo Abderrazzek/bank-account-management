@@ -22,6 +22,7 @@ const TableActionButtons: React.FC<{
   };
 
   const handleEditClick = () => {
+    //TODO handle deleted-account
     navigate(`/accounts/${data.id}`, {
       state: {
         data,
