@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button, Box } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { AgGridReact } from "ag-grid-react";
@@ -14,6 +14,7 @@ import {
   paginationPageSize,
   paginationPageSizeSelector,
 } from "../constants";
+import { useModal } from "modules/shared/hooks/useModal";
 
 interface Props {
   isDeletedAccounts?: boolean;
@@ -24,10 +25,11 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
   const { accounts, isLoading } = useAccounts();
   const { addAccount, isAddAccountPending } = useAddAccount();
   const { deleteAccount, isDeleteAccountPending } = useDeleteAccount();
-  const [rowData, setRowData] = useState<Account[]>(accounts);
+
   // TODO HANDLE STATES WITH CUSTOM HOOKS
-  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
-  const [accountToDelete, setAccountToDelete] = useState<Account | null>(null);
+  const { isOpen: isEditOpen, toggle: toggleEdit } = useModal();
+  const { isOpen: isDeleteOpen, toggle: toggleDelete } = useModal();
+  // const [accountToDelete, setAccountToDelete] = useState<Account | null>(null);
   const { defaultColDef, colDefs } = usePagination();
   const navigate = useNavigate();
 
@@ -59,7 +61,7 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
         style={{ height: 500 }} // the grid will fill the size of the parent container
       >
         <AgGridReact
-          rowData={rowData}
+          rowData={accounts}
           columnDefs={colDefs}
           defaultColDef={defaultColDef}
           pagination={pagination}
