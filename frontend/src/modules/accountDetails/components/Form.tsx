@@ -13,6 +13,7 @@ import { CurrencyInfo, currencies } from "shared/models";
 import ConfirmationModal from "shared/components/Modal";
 import { Account } from "shared/constants";
 import { initialValues, validationSchema } from "../constants";
+import { useModal } from "shared/hooks/useModal";
 
 type FormProps = {
   isReadOnly?: boolean;
@@ -26,15 +27,9 @@ const getCountryByCurrencyCode = (code: string): string => {
   return currency ? currency.country : "";
 };
 
-const Form: React.FC<FormProps> = ({
-  isReadOnly = true,
-  data,
-  onSubmit = () => {},
-  onDelete = () => {},
-}) => {
-  const [isModalEditOpen, setIsModalEditOpen] = React.useState<boolean>(false);
-  const [isModalDeleteOpen, setIsModalDeleteOpen] =
-    React.useState<boolean>(false);
+const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
+  const { isOpen: isEditOpen, toggle: toggleEdit } = useModal();
+  const { isOpen: isDeleteOpen, toggle: toggleDelete } = useModal();
   const [editedValues, setEditedValues] = React.useState<Account | null>(null); // Track edited values
 
   const formikProps = {
@@ -42,7 +37,7 @@ const Form: React.FC<FormProps> = ({
     onSubmit: (values: Account) => {
       // Open the Edit modal and set edited values
       setEditedValues(values);
-      setIsModalEditOpen(true);
+      toggleEdit();
     },
     validationSchema,
     enableReinitialize: true,
@@ -68,7 +63,7 @@ const Form: React.FC<FormProps> = ({
                   colorScheme="red"
                   mr={2}
                   type="button"
-                  onClick={() => setIsModalDeleteOpen(true)}
+                  onClick={() => toggleDelete()}
                 >
                   Delete
                 </Button>
@@ -123,7 +118,7 @@ const Form: React.FC<FormProps> = ({
               <ButtonGroup>
                 <SubmitButton
                   isDisabled={!isValid || !dirty}
-                  isLoading={isModalEditOpen}
+                  isLoading={isEditOpen}
                 >
                   Submit
                 </SubmitButton>
@@ -135,23 +130,23 @@ const Form: React.FC<FormProps> = ({
       </Formik>
       {editedValues && ( // Render Edit modal if editedValues exist
         <ConfirmationModal
-          isOpen={isModalEditOpen}
-          onClose={() => setIsModalEditOpen(false)}
+          isOpen={isEditOpen}
+          onClose={() => toggleEdit()}
           text="Are you sure you want to submit changes?"
           onConfirm={() => {
-            onSubmit(editedValues); // Call onSubmit with editedValues
-            setIsModalEditOpen(false); // Close Edit modal after submitting
+            // onSubmit(editedValues); // Call onSubmit with editedValues
+            toggleEdit(); // Close Edit modal after submitting
           }}
         />
       )}
       <ConfirmationModal
-        isOpen={isModalDeleteOpen}
-        onClose={() => setIsModalDeleteOpen(false)}
+        isOpen={isDeleteOpen}
+        onClose={() => toggleDelete()}
         text="Do you really want to delete this account?"
         confirmBtnText="Delete"
         onConfirm={() => {
-          onDelete();
-          setIsModalDeleteOpen(false);
+          // onDelete();
+          toggleDelete();
           //TODO REDIRECTION TO ACCOUNTS
         }}
       />

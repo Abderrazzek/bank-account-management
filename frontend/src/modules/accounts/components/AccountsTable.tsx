@@ -26,8 +26,7 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
   const { deleteAccount, isDeleteAccountPending } = useDeleteAccount();
 
   // TODO HANDLE STATES WITH CUSTOM HOOKS
-  const { isOpen: isEditOpen, toggle: toggleEdit } = useModal();
-  const { isOpen: isDeleteOpen, toggle: toggleDelete } = useModal();
+  const { isOpen, toggle } = useModal();
   // TODO CHECK IT
   const { selectedAccountId } = useSelectedAccount();
   const { defaultColDef, colDefs } = usePagination();
@@ -64,21 +63,13 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
         />
       </div>
       <ConfirmationModal
-        isOpen={isEditOpen}
-        onClose={toggleEdit}
-        text="Are you sure you want to submit this changes?"
-        onConfirm={() => {
-          //TODO navigation to account/id
-        }}
-      />
-      <ConfirmationModal
-        isOpen={isDeleteOpen}
-        onClose={toggleDelete}
+        isOpen={isOpen}
+        onClose={toggle}
         text="Do you really want to delete this account?"
         confirmBtnText="Delete"
         onConfirm={() => {
           deleteAccount(selectedAccountId);
-          toggleDelete();
+          toggle();
         }}
       />
     </div>
