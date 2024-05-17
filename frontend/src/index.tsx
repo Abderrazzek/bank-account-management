@@ -6,7 +6,6 @@ import { ChakraProvider } from "@chakra-ui/react";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import AccountDetailContextProvider from "./accounts/details/context/AccountDetailContext";
 import theme from "assets/theme";
 
 const root = ReactDOM.createRoot(
@@ -16,9 +15,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ChakraProvider theme={theme}>
-        <AccountDetailContextProvider>
-          <App />
-        </AccountDetailContextProvider>
+        <App />
       </ChakraProvider>
     </BrowserRouter>
   </React.StrictMode>
