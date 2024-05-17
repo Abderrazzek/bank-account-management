@@ -1,2 +1,2 @@
 export * from "./useAccounts";
-export * from "./pagination";
+export * from "./usePagination";
