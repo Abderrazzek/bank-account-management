@@ -14,7 +14,6 @@ type UseAccountsResult = UseQueryResult<Account[], AxiosResponse> & {
   accounts: Account[];
 };
 
-// TODO CHECK IF WE NEED TO ADD PENDING HERE
 export const useAccounts = (): UseAccountsResult => {
   const accountsQueryResult = useQuery<Account[], AxiosResponse>({
     queryKey: ["accounts"],
@@ -23,7 +22,6 @@ export const useAccounts = (): UseAccountsResult => {
 
   return {
     accounts: accountsQueryResult.data ?? [],
-    //isLoading
     ...accountsQueryResult,
   } as UseAccountsResult;
 };
@@ -44,7 +42,7 @@ export const useAddAccount = (
 
   const {
     mutate: addAccount,
-    isPending: isAddAccountPending, // Changed isPending to isLoading
+    isPending: isAddAccountPending,
     ...rest
   } = useMutation<AxiosResponse, unknown, Account>({
     mutationFn: (newAccount: Account) => axios.post("/accounts", newAccount),
@@ -55,6 +53,36 @@ export const useAddAccount = (
   });
 
   return { addAccount, isAddAccountPending, ...rest } as UseAddAccountResult;
+};
+
+type UseEditAccountResult = UseMutationResult<
+  AxiosResponse,
+  unknown,
+  Account
+> & {
+  editAccount: (updatedAccount: Account) => void;
+  isEditAccountPending: boolean;
+};
+
+export const useEditAccount = (
+  options?: UseMutationOptions<AxiosResponse, unknown, Account>
+): UseEditAccountResult => {
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: editAccount,
+    isPending: isEditAccountPending,
+    ...rest
+  } = useMutation<AxiosResponse, unknown, Account>({
+    mutationFn: (updatedAccount: Account) =>
+      axios.put(`/accounts/${updatedAccount.id}`, updatedAccount),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+    },
+    ...options,
+  });
+
+  return { editAccount, isEditAccountPending, ...rest } as UseEditAccountResult;
 };
 
 type UseDeleteAccountResult = UseMutationResult<
@@ -73,7 +101,7 @@ export const useDeleteAccount = (
 
   const {
     mutate: deleteAccount,
-    isPending: isDeleteAccountPending, // Changed isPending to isLoading
+    isPending: isDeleteAccountPending, // Correct key is `isLoading`
     ...rest
   } = useMutation<AxiosResponse, unknown, number>({
     mutationFn: (id: number) => axios.delete(`/accounts/${id}`),
@@ -89,4 +117,3 @@ export const useDeleteAccount = (
     ...rest,
   } as UseDeleteAccountResult;
 };
-// TODO add useeditaccount
