@@ -3,9 +3,9 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import FundTransfer from "modules/fundTransfer";
-import AccountDetails from "modules/accountDetails/components/AccountDetails";
 import Accounts from "modules/accounts";
 import SidebarWithHeader from "shared/components/Sidebar";
+import AccountDetails from "modules/accountDetails";
 
 const queryClient = new QueryClient();
 
