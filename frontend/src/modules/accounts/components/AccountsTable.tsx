@@ -4,31 +4,31 @@ import { FiPlus } from "react-icons/fi";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import useAccountDetails from "accounts/details/hooks/useAccountDetails";
+import { useAccounts, useAddAccount, useDeleteAccount } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "modules/shared/components/ConfirmationModal";
 import { Account } from "../models";
 import { usePagination } from "../hooks";
+import {
+  pagination,
+  paginationPageSize,
+  paginationPageSizeSelector,
+} from "../constants";
 
 interface Props {
   isDeletedAccounts?: boolean;
 }
 
 const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
-  const { accounts, loadAccounts, removeAccount } = useAccountDetails();
+  // TODO STATES AS GROUPED CUSTOM HOOKS
+  const { accounts, isLoading } = useAccounts();
+  const { addAccount, isAddAccountPending } = useAddAccount();
+  const { deleteAccount, isDeleteAccountPending } = useDeleteAccount();
   const [rowData, setRowData] = useState<Account[]>(accounts);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
   const [accountToDelete, setAccountToDelete] = useState<Account | null>(null);
   const { defaultColDef, colDefs } = usePagination();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    loadAccounts();
-  }, [loadAccounts]);
-
-  useEffect(() => {
-    setRowData(accounts);
-  }, [accounts]);
 
   const handleNewAccountClick = () => {
     // Redirect to create new account page
@@ -39,18 +39,6 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
     setAccountToDelete(account);
     setIsModalDeleteOpen(true);
   };
-
-  const onDelete = async () => {
-    if (accountToDelete) {
-      await removeAccount(accountToDelete.id);
-      // Refresh accounts after deletion
-      loadAccounts();
-    }
-  };
-
-  const pagination = true;
-  const paginationPageSize = 10;
-  const paginationPageSizeSelector = [10, 50, 100];
 
   return (
     <div>
@@ -84,7 +72,6 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
         text="Do you really want to delete this account?"
         confirmBtnText="Delete"
         onConfirm={() => {
-          onDelete();
           setIsModalDeleteOpen(false); // Close Edit modal after submitting
         }}
       />

@@ -4,7 +4,7 @@ import SidebarWithHeader from "./components/Sidebar";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import FundTransfer from "modules/fundTransfer";
-import AccountDetails from "modules/accountDetails";
+import AccountDetails from "modules/accountDetails/components/AccountDetails";
 import Accounts from "modules/accounts";
 
 const queryClient = new QueryClient();
