@@ -1,1 +1,1 @@
-export * from "./Sidebar";
+export * from "../modules/shared/components/Sidebar";

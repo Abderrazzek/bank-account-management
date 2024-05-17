@@ -11,7 +11,7 @@ import {
 import * as Yup from "yup";
 
 import { CurrencyInfo, currencies } from "modules/shared/models/currency";
-import ConfirmationModal from "modules/shared/components/ConfirmationModal";
+import ConfirmationModal from "modules/shared/components/Modal";
 import { Account } from "modules/accounts/models";
 
 type FormProps = {

@@ -1,6 +1,6 @@
 import React from "react";
 
-import SidebarWithHeader from "./components/Sidebar";
+import SidebarWithHeader from "./modules/shared/components/Sidebar";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import FundTransfer from "modules/fundTransfer";

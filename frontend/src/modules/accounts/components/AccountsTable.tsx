@@ -6,7 +6,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { useAccounts, useAddAccount, useDeleteAccount } from "../hooks";
 import { useNavigate } from "react-router-dom";
-import ConfirmationModal from "modules/shared/components/ConfirmationModal";
+import ConfirmationModal from "modules/shared/components/Modal";
 import { Account } from "../models";
 import { usePagination } from "../hooks";
 import {
@@ -25,6 +25,7 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
   const { addAccount, isAddAccountPending } = useAddAccount();
   const { deleteAccount, isDeleteAccountPending } = useDeleteAccount();
   const [rowData, setRowData] = useState<Account[]>(accounts);
+  // TODO HANDLE STATES WITH CUSTOM HOOKS
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
   const [accountToDelete, setAccountToDelete] = useState<Account | null>(null);
   const { defaultColDef, colDefs } = usePagination();

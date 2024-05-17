@@ -1,5 +1,5 @@
 import { Box, ButtonGroup } from "@chakra-ui/react";
-import ConfirmationModal from "modules/shared/components/ConfirmationModal";
+import ConfirmationModal from "modules/shared/components/Modal";
 import { Formik, FormikHelpers } from "formik";
 import {
   NumberInputControl,
