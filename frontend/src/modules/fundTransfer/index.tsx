@@ -1,5 +1,4 @@
 import { Box, ButtonGroup } from "@chakra-ui/react";
-import ConfirmationModal from "modules/shared/components/Modal";
 import { Formik, FormikHelpers } from "formik";
 import {
   NumberInputControl,
@@ -8,7 +7,8 @@ import {
   SubmitButton,
 } from "formik-chakra-ui";
 import * as React from "react";
-import { CurrencyInfo, currencies } from "modules/shared/models/currency";
+import ConfirmationModal from "shared/components/Modal";
+import { CurrencyInfo, currencies } from "shared/models";
 import * as Yup from "yup";
 
 //TODO GET ALL ACCOUNTS

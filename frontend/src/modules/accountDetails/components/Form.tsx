@@ -10,9 +10,9 @@ import {
 } from "formik-chakra-ui";
 import * as Yup from "yup";
 
-import { CurrencyInfo, currencies } from "modules/shared/models/currency";
-import ConfirmationModal from "modules/shared/components/Modal";
 import { Account } from "modules/accounts/models";
+import { CurrencyInfo, currencies } from "shared/models";
+import ConfirmationModal from "shared/components/Modal";
 
 type FormProps = {
   isReadOnly?: boolean;

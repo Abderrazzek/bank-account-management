@@ -6,15 +6,15 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { useAccounts, useDeleteAccount } from "../hooks";
 import { useNavigate } from "react-router-dom";
-import ConfirmationModal from "modules/shared/components/Modal";
 import { usePagination } from "../hooks";
 import {
   pagination,
   paginationPageSize,
   paginationPageSizeSelector,
 } from "../constants";
-import { useModal } from "modules/shared/hooks/useModal";
 import { useSelectedAccount } from "../context";
+import { useModal } from "shared/hooks/useModal";
+import ConfirmationModal from "shared/components/Modal";
 
 interface Props {
   isDeletedAccounts?: boolean;

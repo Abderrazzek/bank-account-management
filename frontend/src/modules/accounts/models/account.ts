@@ -1,4 +1,4 @@
-import { CurrencyCode } from "modules/shared/models";
+import { CurrencyCode } from "shared/models";
 
 export interface Account {
   id: number;
