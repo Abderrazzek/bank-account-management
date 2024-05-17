@@ -19,7 +19,10 @@ const App = () => {
             <Route path="/accounts/:userId" Component={AccountDetails} />
             <Route path="/fund-transfer" Component={FundTransfer} />
             {/* TODO: ADD PARAMS TO WORKS AS DELETED ACCOUNTS */}
-            <Route path="/deleted-accounts" Component={Accounts} />
+            <Route
+              path="/deleted-accounts"
+              element={<Accounts isDeletedAccounts />}
+            />
             {/* TODO: ADD PARAMS TO WORKS AS DELETED ACCOUNTS */}
             <Route
               path="/deleted-accounts/:userId"

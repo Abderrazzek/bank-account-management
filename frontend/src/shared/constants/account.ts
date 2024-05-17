@@ -10,8 +10,3 @@ export interface Account {
   historyBalance: Record<string, string | number>[];
   isDeleted?: boolean;
 }
-
-export interface HistoryBalance {
-  date: string;
-  balance: number;
-}

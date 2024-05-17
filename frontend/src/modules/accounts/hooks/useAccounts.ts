@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-query";
 import axios from "services/axios";
 import { AxiosResponse } from "axios";
-import { Account } from "../models";
+import { Account } from "shared/constants";
 
 type UseAccountsResult = UseQueryResult<Account[], AxiosResponse> & {
   accounts: Account[];

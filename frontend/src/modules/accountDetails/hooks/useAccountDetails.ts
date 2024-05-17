@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-query";
 import axios from "services/axios";
 import { AxiosResponse } from "axios";
-import { Account } from "modules/accounts/models";
+import { Account } from "shared/constants";
 
 // Fetch account details
 type UseAccountDetailsResult = UseQueryResult<Account, AxiosResponse> & {

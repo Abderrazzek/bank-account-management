@@ -4,7 +4,7 @@ import React from "react";
 import { Button, Flex } from "@chakra-ui/react";
 import { FiEye, FiEdit, FiTrash } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { Account } from "../models";
+import { Account } from "shared/constants";
 
 const TableActionButtons: React.FC<{
   data: Account;

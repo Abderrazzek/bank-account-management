@@ -8,11 +8,11 @@ import {
   SelectControl,
   SubmitButton,
 } from "formik-chakra-ui";
-import * as Yup from "yup";
 
-import { Account } from "modules/accounts/models";
 import { CurrencyInfo, currencies } from "shared/models";
 import ConfirmationModal from "shared/components/Modal";
+import { Account } from "shared/constants";
+import { initialValues, validationSchema } from "../constants";
 
 type FormProps = {
   isReadOnly?: boolean;
@@ -20,24 +20,6 @@ type FormProps = {
   onSubmit?: (values: Account) => void;
   onDelete?: () => void;
 };
-
-const initialValues: Account = {
-  id: 0,
-  ownerId: 0,
-  firstName: "",
-  lastName: "",
-  currency: "EUR",
-  historyBalance: [],
-  balance: 0,
-};
-
-const validationSchema = Yup.object({
-  ownerId: Yup.number().required(),
-  firstName: Yup.string().required(),
-  lastName: Yup.string().required(),
-  currency: Yup.string().required(),
-  balance: Yup.number().required().min(-200),
-});
 
 const getCountryByCurrencyCode = (code: string): string => {
   const currency = currencies.find((currency) => currency.code === code);
