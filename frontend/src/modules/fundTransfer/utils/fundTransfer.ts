@@ -1,4 +1,6 @@
-import { ExchangeRates } from "modules/shared/models/currency";
+import axios from "axios";
+import { ExchangeRates } from "../models";
+import { Account } from "shared/constants";
 
 export function convertCurrency(
   exchangeRates: ExchangeRates,
@@ -24,3 +26,20 @@ export function convertCurrency(
   // Return the converted value
   return convertedValue;
 }
+
+// TODO CONFIRM THIS AND IT'S EMPLACEMENT
+export const fetchConversionRates = async (): Promise<ExchangeRates> => {
+  const response = await axios.get(process.env.CURRENCY_EXCHANGE_API!);
+  return response.data;
+};
+
+export const updateHistoryBalance = (
+  account: Account,
+  newBalance: number
+): Record<string, string | number>[] => {
+  const newEntry = {
+    date: new Date().toISOString(),
+    balance: newBalance,
+  };
+  return [...account.historyBalance, newEntry];
+};
