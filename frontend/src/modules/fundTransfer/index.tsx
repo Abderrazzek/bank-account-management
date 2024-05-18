@@ -9,7 +9,8 @@ import {
 import * as React from "react";
 import ConfirmationModal from "shared/components/Modal";
 import { CurrencyInfo, currencies } from "shared/models";
-import * as Yup from "yup";
+import { initialValues, validationSchema } from "./constants";
+import { FormValues } from "./models";
 
 //TODO GET ALL ACCOUNTS
 // TODO CREATE ACCOUNTS IDS ARRAY FROM THEM
@@ -17,13 +18,6 @@ const accountIds: number[] = [1, 2, 3]; // Example account IDs
 
 const sleep = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
-
-interface FormValues {
-  sender: number;
-  receiver: number;
-  currency: string;
-  amount: number;
-}
 
 const FundTransfer: React.FC = () => {
   const [showConfirmationModal, setShowConfirmationModal] =
@@ -44,41 +38,6 @@ const FundTransfer: React.FC = () => {
     }
     setShowConfirmationModal(false);
   };
-
-  const initialValues: FormValues = {
-    sender: 0,
-    receiver: 0,
-    currency: "",
-    amount: 0,
-  };
-
-  const validationSchema = Yup.object({
-    sender: Yup.number()
-      .required()
-      .test(
-        "notSameAsReceiver",
-        "Sender and receiver cannot be the same account",
-        function (value) {
-          const receiver = this.parent.receiver;
-          return value !== receiver;
-        }
-      ),
-    receiver: Yup.number()
-      .required()
-      .test(
-        "notSameAsSender",
-        "Sender and receiver cannot be the same account",
-        function (value) {
-          const sender = this.parent.sender;
-          return value !== sender;
-        }
-      ),
-    currency: Yup.string().required(),
-    amount: Yup.number()
-      .required()
-      .min(0)
-      .moreThan(0, "Amount must be greater than 0"),
-  });
 
   return (
     <>
