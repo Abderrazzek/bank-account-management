@@ -13,7 +13,7 @@ import {
   updateHistoryBalance,
 } from "../utils";
 
-const useTransaction = (
+const useFundTransfer = (
   options?: UseMutationOptions<TransactionResult, Error, FormValues>
 ): UseMutationResult<TransactionResult, Error, FormValues> => {
   const queryClient = useQueryClient();
@@ -105,4 +105,4 @@ const useTransaction = (
   });
 };
 
-export default useTransaction;
+export default useFundTransfer;

@@ -1,4 +1,4 @@
-import { Box, ButtonGroup } from "@chakra-ui/react";
+import { Box, ButtonGroup, Spinner } from "@chakra-ui/react";
 import { Formik, FormikHelpers } from "formik";
 import {
   NumberInputControl,
@@ -11,35 +11,46 @@ import ConfirmationModal from "shared/components/Modal";
 import { CurrencyInfo, currencies } from "shared/models";
 import { initialValues, validationSchema } from "./constants";
 import { FormValues } from "./models";
-
-//TODO GET ALL ACCOUNTS
-// TODO CREATE ACCOUNTS IDS ARRAY FROM THEM
-const accountIds: number[] = [1, 2, 3]; // Example account IDs
-
-const sleep = (ms: number) =>
-  new Promise<void>((resolve) => setTimeout(resolve, ms));
+import useFundTransfer from "./hooks/useFundTransfer";
+import { useAccounts } from "modules/accounts/hooks";
+import { getAccountIds } from "./utils";
+import { useModal } from "shared/hooks/useModal";
 
 const FundTransfer: React.FC = () => {
-  const [showConfirmationModal, setShowConfirmationModal] =
-    React.useState<boolean>(false);
+  const { isOpen, toggle } = useModal();
   const [formValues, setFormValues] = React.useState<FormValues | null>(null);
+  const { accounts, isLoading } = useAccounts();
+  const accoutsId = getAccountIds(accounts);
+
+  const {
+    mutate: makeTransaction,
+    isPending,
+    error,
+  } = useFundTransfer({
+    onSuccess: () => {
+      toggle();
+      window.alert("Transaction successful");
+    },
+    onError: (error) => {
+      window.alert(`Transaction failed: ${error.message}`);
+    },
+  });
 
   const onSubmit = (values: FormValues, helpers: FormikHelpers<FormValues>) => {
     setFormValues(values);
-    setShowConfirmationModal(true);
+    toggle();
     helpers.setSubmitting(false);
   };
 
   const handleConfirmation = () => {
     if (formValues) {
-      sleep(300).then(() => {
-        window.alert(JSON.stringify(formValues, null, 2));
-      });
+      makeTransaction(formValues);
     }
-    setShowConfirmationModal(false);
   };
 
-  return (
+  return isPending ? (
+    <Spinner />
+  ) : (
     <>
       <Formik
         initialValues={initialValues}
@@ -62,7 +73,7 @@ const FundTransfer: React.FC = () => {
               label="Sender"
               selectProps={{ placeholder: "Select account" }}
             >
-              {accountIds.map((id) => (
+              {accoutsId.map((id) => (
                 <option key={id} value={id}>
                   Account {id}
                 </option>
@@ -73,7 +84,7 @@ const FundTransfer: React.FC = () => {
               label="Receiver"
               selectProps={{ placeholder: "Select account" }}
             >
-              {accountIds.map((id) => (
+              {accoutsId.map((id) => (
                 <option key={id} value={id}>
                   Account {id}
                 </option>
@@ -81,7 +92,7 @@ const FundTransfer: React.FC = () => {
             </SelectControl>
             <SelectControl
               name="currency"
-              label="Default currency"
+              label="Currency"
               selectProps={{ placeholder: "Select currency" }}
             >
               {currencies.map((currency: CurrencyInfo) => (
@@ -93,16 +104,18 @@ const FundTransfer: React.FC = () => {
             <NumberInputControl name="amount" label="Amount" />
 
             <ButtonGroup>
-              <SubmitButton isDisabled={!isValid}>Submit</SubmitButton>
+              <SubmitButton isDisabled={!isValid || isPending}>
+                Submit
+              </SubmitButton>
               <ResetButton>Reset</ResetButton>
             </ButtonGroup>
           </Box>
         )}
       </Formik>
       <ConfirmationModal
-        text="Are you sure you want to proceed this fund transfer?"
-        onClose={() => setShowConfirmationModal(false)}
-        isOpen={showConfirmationModal}
+        text="Are you sure you want to proceed with this fund transfer?"
+        onClose={toggle}
+        isOpen={isOpen}
         onConfirm={handleConfirmation}
       />
     </>

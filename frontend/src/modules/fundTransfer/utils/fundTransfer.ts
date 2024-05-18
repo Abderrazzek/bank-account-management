@@ -43,3 +43,9 @@ export const updateHistoryBalance = (
   };
   return [...account.historyBalance, newEntry];
 };
+
+export const getAccountIds = (accounts: Account[]): number[] => {
+  return accounts
+    .filter((account) => !account.isDeleted)
+    .map((account) => account.id);
+};
