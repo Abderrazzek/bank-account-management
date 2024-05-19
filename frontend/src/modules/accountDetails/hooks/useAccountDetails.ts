@@ -27,35 +27,6 @@ export const useAccountDetails = (id: number): UseAccountDetailsResult => {
   } as UseAccountDetailsResult;
 };
 
-type UseAddAccountResult = UseMutationResult<
-  AxiosResponse,
-  unknown,
-  Account
-> & {
-  addAccount: (newAccount: Account) => void;
-  isAddAccountPending: boolean;
-};
-
-export const useAddAccount = (
-  options?: UseMutationOptions<AxiosResponse, unknown, Account>
-): UseAddAccountResult => {
-  const queryClient = useQueryClient();
-
-  const {
-    mutate: addAccount,
-    isPending: isAddAccountPending,
-    ...rest
-  } = useMutation<AxiosResponse, unknown, Account>({
-    mutationFn: (newAccount: Account) => axios.post("/accounts", newAccount),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-    },
-    ...options,
-  });
-
-  return { addAccount, isAddAccountPending, ...rest } as UseAddAccountResult;
-};
-
 // Edit account
 type UseEditAccountResult = UseMutationResult<
   AxiosResponse,

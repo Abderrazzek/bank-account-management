@@ -6,6 +6,7 @@ import FundTransfer from "modules/fundTransfer";
 import Accounts from "modules/accounts";
 import SidebarWithHeader from "shared/components/Sidebar";
 import AccountDetails from "modules/accountDetails";
+import NewAccount from "modules/newAccount";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App = () => {
           <Routes>
             <Route path="/accounts" Component={Accounts} />
             <Route path="/accounts/:id" Component={AccountDetails} />
+            <Route path="/new-account" Component={NewAccount} />
             <Route path="/fund-transfer" Component={FundTransfer} />
             {/* TODO: ADD PARAMS TO WORKS AS DELETED ACCOUNTS */}
             <Route

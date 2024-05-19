@@ -32,8 +32,7 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
   const navigate = useNavigate();
 
   const handleNewAccountClick = () => {
-    // Redirect to create new account page
-    navigate("/accounts/new");
+    navigate("/new-account");
   };
 
   return isLoading || isDeleteAccountPending ? (

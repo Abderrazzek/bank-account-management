@@ -11,8 +11,7 @@ import {
 
 import { CurrencyInfo, currencies } from "shared/models";
 import ConfirmationModal from "shared/components/Modal";
-import { Account } from "shared/constants";
-import { initialValues, validationSchema } from "../constants";
+import { Account, initialValues, validationSchema } from "shared/constants";
 import { useModal } from "shared/hooks/useModal";
 import { useDeleteAccount, useEditAccount } from "../hooks";
 import { useNavigate } from "react-router-dom";
