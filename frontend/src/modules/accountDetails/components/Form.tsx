@@ -17,6 +17,7 @@ import { useModal } from "shared/hooks/useModal";
 import { useDeleteAccount, useEditAccount } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import Spinner from "shared/components/Spinner";
+import { handleRefresh } from "../utils";
 
 type FormProps = {
   isReadOnly?: boolean;
@@ -37,15 +38,27 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
   const { editAccount, isEditAccountPending } = useEditAccount();
   const { deleteAccount, isDeleteAccountPending } = useDeleteAccount();
   const navigate = useNavigate();
+
   const formikProps = {
     initialValues: data || initialValues,
     onSubmit: (values: Account) => {
       setEditedValues(values);
-      editAccount(values);
       toggleEdit();
     },
     validationSchema,
     enableReinitialize: true,
+  };
+
+  const handleEditModalConfirm = () => {
+    editAccount(editedValues!);
+    toggleEdit();
+    handleRefresh();
+  };
+
+  const handleDeleteModalConfirm = () => {
+    deleteAccount(data!.id);
+    toggleDelete();
+    navigate("/accounts");
   };
 
   return isEditAccountPending || isDeleteAccountPending ? (
@@ -64,18 +77,6 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
             as="form"
             onSubmit={handleSubmit}
           >
-            <Flex justify="flex-end">
-              {!isReadOnly && (
-                <Button
-                  colorScheme="red"
-                  mr={2}
-                  type="button"
-                  onClick={() => toggleDelete()}
-                >
-                  Delete
-                </Button>
-              )}
-            </Flex>
             <NumberInputControl
               name="ownerId"
               label="Owner Id"
@@ -128,7 +129,14 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
                 >
                   Submit
                 </SubmitButton>
-                <ResetButton>Reset</ResetButton>
+                <ResetButton mr={16}>Reset</ResetButton>
+                <Button
+                  colorScheme="red"
+                  type="button"
+                  onClick={() => toggleDelete()}
+                >
+                  Delete Account
+                </Button>
               </ButtonGroup>
             )}
           </Box>
@@ -139,10 +147,7 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
           isOpen={isEditOpen}
           onClose={() => toggleEdit()}
           text="Are you sure you want to submit changes?"
-          onConfirm={() => {
-            editAccount(editedValues);
-            toggleEdit();
-          }}
+          onConfirm={handleEditModalConfirm}
         />
       )}
       <ConfirmationModal
@@ -150,11 +155,7 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
         onClose={() => toggleDelete()}
         text="Do you really want to delete this account?"
         confirmBtnText="Delete"
-        onConfirm={() => {
-          deleteAccount(data ? data.id : initialValues.id);
-          toggleDelete();
-          navigate("/accounts");
-        }}
+        onConfirm={handleDeleteModalConfirm}
       />
     </>
   );

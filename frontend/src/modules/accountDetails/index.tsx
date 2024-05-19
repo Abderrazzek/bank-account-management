@@ -17,8 +17,6 @@ const AccountDetails: React.FC = () => {
 
   if (isError) navigate("/accounts");
 
-  const onSubmit = (values: any) => {};
-
   return isPending ? (
     <Spinner />
   ) : (
@@ -26,7 +24,7 @@ const AccountDetails: React.FC = () => {
       <Heading fontWeight="medium" size="md">
         Account Details
       </Heading>
-      <Form onSubmit={onSubmit} data={account} isReadOnly={mode === "view"} />
+      <Form data={account} isReadOnly={mode === "view"} />
       {account && account.historyBalance?.length > 1 && (
         <LineChart data={account.historyBalance} />
       )}
