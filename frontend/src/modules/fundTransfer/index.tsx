@@ -13,17 +13,17 @@ import { initialValues, validationSchema } from "./constants";
 import { FormValues } from "./models";
 import useFundTransfer from "./hooks/useFundTransfer";
 import { useAccounts } from "modules/accounts/hooks";
-import { getAccountIds } from "./utils";
 import { useModal } from "shared/hooks/useModal";
 import Spinner from "shared/components/Spinner";
+import { useAccountIdsMapper } from "./hooks/useAccountMapper";
 
 const FundTransfer: React.FC = () => {
   const { isOpen, toggle } = useModal();
   const [formValues, setFormValues] = React.useState<FormValues>(initialValues);
-  const { accounts, isLoading } = useAccounts();
-  const accountsId = getAccountIds(accounts);
+  const { accounts } = useAccounts();
+  const accountsId = useAccountIdsMapper(accounts);
 
-  const { transferMoney, isEditAccountPending, error } = useFundTransfer(
+  const { transferMoney, isEditAccountPending } = useFundTransfer(
     formValues || initialValues
   );
 
