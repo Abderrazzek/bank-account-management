@@ -32,7 +32,8 @@ const getCountryByCurrencyCode = (code: string): string => {
 const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
   const { isOpen: isEditOpen, toggle: toggleEdit } = useModal();
   const { isOpen: isDeleteOpen, toggle: toggleDelete } = useModal();
-  const [editedValues, setEditedValues] = React.useState<Account | null>(null); // Track edited values
+  const [formEditedValues, setFormEditedValues] =
+    React.useState<Account | null>(null); // Track edited values
   const { editAccount, isEditAccountPending } = useEditAccount();
   const { deleteAccount, isDeleteAccountPending } = useDeleteAccount();
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
   const formikProps = {
     initialValues: data || initialValues,
     onSubmit: (values: Account) => {
-      setEditedValues(values);
+      setFormEditedValues(values);
       toggleEdit();
     },
     validationSchema,
@@ -48,7 +49,7 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
   };
 
   const handleEditModalConfirm = async () => {
-    await editAccount(editedValues!);
+    await editAccount(formEditedValues!);
     toggleEdit();
   };
 
@@ -139,7 +140,7 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
           </Box>
         )}
       </Formik>
-      {editedValues && (
+      {formEditedValues && (
         <ConfirmationModal
           isOpen={isEditOpen}
           onClose={toggleEdit}
