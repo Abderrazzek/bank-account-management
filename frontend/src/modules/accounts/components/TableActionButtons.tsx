@@ -14,11 +14,9 @@ const TableActionButtons: React.FC<{
   const navigate = useNavigate();
 
   const handleViewClick = () => {
-    navigate(`/${isDeletedAccounts ? "deleted-" : ""}accounts/${data.id}`, {
-      state: {
-        data,
-      },
-    });
+    navigate(
+      `/${isDeletedAccounts ? "deleted-" : ""}accounts/${data.id}?mode=view`
+    );
   };
 
   const handleEditClick = () => {

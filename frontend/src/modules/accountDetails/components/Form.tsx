@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button, ButtonGroup, Flex } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Spinner } from "@chakra-ui/react";
 import { Formik } from "formik";
 import {
   InputControl,
@@ -14,6 +14,8 @@ import ConfirmationModal from "shared/components/Modal";
 import { Account } from "shared/constants";
 import { initialValues, validationSchema } from "../constants";
 import { useModal } from "shared/hooks/useModal";
+import { useDeleteAccount, useEditAccount } from "../hooks";
+import { useNavigate } from "react-router-dom";
 
 type FormProps = {
   isReadOnly?: boolean;
@@ -31,19 +33,24 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
   const { isOpen: isEditOpen, toggle: toggleEdit } = useModal();
   const { isOpen: isDeleteOpen, toggle: toggleDelete } = useModal();
   const [editedValues, setEditedValues] = React.useState<Account | null>(null); // Track edited values
-
+  const { editAccount, isEditAccountPending } = useEditAccount();
+  const { deleteAccount, isDeleteAccountPending } = useDeleteAccount();
+  const navigate = useNavigate();
   const formikProps = {
     initialValues: data || initialValues,
     onSubmit: (values: Account) => {
-      // Open the Edit modal and set edited values
+      console.log("======", values);
       setEditedValues(values);
+      editAccount(values);
       toggleEdit();
     },
     validationSchema,
     enableReinitialize: true,
   };
 
-  return (
+  return isEditAccountPending || isDeleteAccountPending ? (
+    <Spinner />
+  ) : (
     <>
       <Formik {...formikProps}>
         {({ handleSubmit, isValid, dirty }) => (
@@ -71,7 +78,7 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
             </Flex>
             <NumberInputControl
               name="ownerId"
-              label="Id"
+              label="Owner Id"
               isReadOnly={isReadOnly}
             />
             <InputControl
@@ -128,14 +135,14 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
           </Box>
         )}
       </Formik>
-      {editedValues && ( // Render Edit modal if editedValues exist
+      {editedValues && (
         <ConfirmationModal
           isOpen={isEditOpen}
           onClose={() => toggleEdit()}
           text="Are you sure you want to submit changes?"
           onConfirm={() => {
-            // onSubmit(editedValues); // Call onSubmit with editedValues
-            toggleEdit(); // Close Edit modal after submitting
+            editAccount(editedValues);
+            toggleEdit();
           }}
         />
       )}
@@ -145,9 +152,9 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
         text="Do you really want to delete this account?"
         confirmBtnText="Delete"
         onConfirm={() => {
-          // onDelete();
+          deleteAccount(data ? data.id : initialValues.id);
           toggleDelete();
-          //TODO REDIRECTION TO ACCOUNTS
+          navigate("/accounts");
         }}
       />
     </>

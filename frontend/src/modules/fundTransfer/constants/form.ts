@@ -2,8 +2,8 @@ import * as Yup from "yup";
 import { FormValues } from "../models";
 
 export const initialValues: FormValues = {
-  sender: 0,
-  receiver: 0,
+  senderId: 0,
+  receiverId: 0,
   currency: "",
   amount: 0,
 };

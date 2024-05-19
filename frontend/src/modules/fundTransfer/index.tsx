@@ -22,19 +22,9 @@ const FundTransfer: React.FC = () => {
   const { accounts, isLoading } = useAccounts();
   const accoutsId = getAccountIds(accounts);
 
-  const {
-    mutate: makeTransaction,
-    isPending,
-    error,
-  } = useFundTransfer({
-    onSuccess: () => {
-      toggle();
-      window.alert("Transaction successful");
-    },
-    onError: (error) => {
-      window.alert(`Transaction failed: ${error.message}`);
-    },
-  });
+  const { transferMoney, isEditAccountPending, error } = useFundTransfer(
+    formValues as FormValues
+  );
 
   const onSubmit = (values: FormValues, helpers: FormikHelpers<FormValues>) => {
     setFormValues(values);
@@ -43,12 +33,11 @@ const FundTransfer: React.FC = () => {
   };
 
   const handleConfirmation = () => {
-    if (formValues) {
-      makeTransaction(formValues);
-    }
+    toggle();
+    transferMoney();
   };
 
-  return isPending ? (
+  return isEditAccountPending ? (
     <Spinner />
   ) : (
     <>
@@ -69,7 +58,7 @@ const FundTransfer: React.FC = () => {
             onSubmit={handleSubmit}
           >
             <SelectControl
-              name="sender"
+              name="senderId"
               label="Sender"
               selectProps={{ placeholder: "Select account" }}
             >
@@ -80,7 +69,7 @@ const FundTransfer: React.FC = () => {
               ))}
             </SelectControl>
             <SelectControl
-              name="receiver"
+              name="receiverId"
               label="Receiver"
               selectProps={{ placeholder: "Select account" }}
             >
@@ -104,7 +93,7 @@ const FundTransfer: React.FC = () => {
             <NumberInputControl name="amount" label="Amount" />
 
             <ButtonGroup>
-              <SubmitButton isDisabled={!isValid || isPending}>
+              <SubmitButton isDisabled={!isValid || isEditAccountPending}>
                 Submit
               </SubmitButton>
               <ResetButton>Reset</ResetButton>

@@ -16,7 +16,7 @@ const App = () => {
         <SidebarWithHeader>
           <Routes>
             <Route path="/accounts" Component={Accounts} />
-            <Route path="/accounts/:userId" Component={AccountDetails} />
+            <Route path="/accounts/:id" Component={AccountDetails} />
             <Route path="/fund-transfer" Component={FundTransfer} />
             {/* TODO: ADD PARAMS TO WORKS AS DELETED ACCOUNTS */}
             <Route
@@ -24,10 +24,7 @@ const App = () => {
               element={<Accounts isDeletedAccounts />}
             />
             {/* TODO: ADD PARAMS TO WORKS AS DELETED ACCOUNTS */}
-            <Route
-              path="/deleted-accounts/:userId"
-              Component={AccountDetails}
-            />
+            <Route path="/deleted-accounts/:id" Component={AccountDetails} />
             <Route path="*" element={<Navigate to="/accounts" replace />} />
           </Routes>
         </SidebarWithHeader>

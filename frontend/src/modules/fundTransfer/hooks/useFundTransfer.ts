@@ -1,108 +1,98 @@
+import { useEffect, useState } from "react";
+import { ExchangeRates, FormValues } from "../models";
 import {
-  UseMutationOptions,
-  UseMutationResult,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { FormValues, TransactionResult } from "../models";
-import axios from "axios";
-import { Account } from "shared/constants";
+  useAccountDetails,
+  useEditAccount,
+} from "modules/accountDetails/hooks";
 import {
   convertCurrency,
   fetchConversionRates,
   updateHistoryBalance,
 } from "../utils";
+import { Account } from "shared/constants";
 
-const useFundTransfer = (
-  options?: UseMutationOptions<TransactionResult, Error, FormValues>
-): UseMutationResult<TransactionResult, Error, FormValues> => {
-  const queryClient = useQueryClient();
+const useFundTransfer = (formValues: FormValues) => {
+  const { senderId, receiverId, currency, amount } = formValues;
+  const { account: sender } = useAccountDetails(senderId);
+  const { account: receiver } = useAccountDetails(receiverId);
+  const { editAccount, isEditAccountPending } = useEditAccount();
 
-  const mutationFn = async (
-    formValues: FormValues
-  ): Promise<TransactionResult> => {
-    const { sender, receiver, amount, currency } = formValues;
+  const [exchangeRates, setExchangeRates] = useState<ExchangeRates | null>(
+    null
+  );
+  const [error, setError] = useState<string | null>(null);
 
-    // Fetch sender and receiver accounts
-    const senderResponse = await axios.get<Account>(`/accounts/${sender}`);
-    const receiverResponse = await axios.get<Account>(`/accounts/${receiver}`);
-
-    const senderAccount = senderResponse.data;
-    const receiverAccount = receiverResponse.data;
-
-    if (!senderAccount || !receiverAccount) {
-      throw new Error("Sender or receiver account not found");
-    }
-
-    const conversionRates = await fetchConversionRates();
-
-    // Convert amount to sender's currency
-    let amountInSenderCurrency = amount;
-    if (currency !== senderAccount.currency) {
-      amountInSenderCurrency = convertCurrency(
-        conversionRates,
-        currency,
-        senderAccount.currency,
-        amount
-      );
-    }
-
-    // Check for sufficient funds
-    if (senderAccount.balance < amountInSenderCurrency) {
-      throw new Error("Insufficient funds");
-    }
-
-    // Convert amount to receiver's currency
-    let amountInReceiverCurrency = amount;
-    if (currency !== receiverAccount.currency) {
-      amountInReceiverCurrency = convertCurrency(
-        conversionRates,
-        currency,
-        receiverAccount.currency,
-        amount
-      );
-    }
-
-    // Update balances
-    const updatedSenderBalance = senderAccount.balance - amountInSenderCurrency;
-    const updatedReceiverBalance =
-      receiverAccount.balance + amountInReceiverCurrency;
-
-    // Update history balances
-    const updatedSenderHistory = updateHistoryBalance(
-      senderAccount,
-      updatedSenderBalance
-    );
-    const updatedReceiverHistory = updateHistoryBalance(
-      receiverAccount,
-      updatedReceiverBalance
-    );
-
-    // Perform the transaction
-    await axios.put(`/accounts/${sender}`, {
-      ...senderAccount,
-      balance: updatedSenderBalance,
-      historyBalance: updatedSenderHistory,
-    });
-
-    await axios.put(`/accounts/${receiver}`, {
-      ...receiverAccount,
-      balance: updatedReceiverBalance,
-      historyBalance: updatedReceiverHistory,
-    });
-
-    return {
-      updatedSenderBalance,
-      updatedReceiverBalance,
+  useEffect(() => {
+    const fetchRates = async () => {
+      try {
+        const rates = await fetchConversionRates();
+        setExchangeRates(rates);
+      } catch (err) {
+        setError((err as Error).message);
+      }
     };
+
+    fetchRates();
+  }, []);
+
+  const transferMoney = async () => {
+    if (!sender || !receiver || !exchangeRates) {
+      setError("Account details or exchange rates are not available");
+      return;
+    }
+
+    try {
+      let convertedAmountFromSenderCurrency = amount;
+      if (currency !== sender.currency) {
+        convertedAmountFromSenderCurrency = convertCurrency(
+          exchangeRates,
+          currency,
+          sender.currency,
+          amount
+        );
+      }
+
+      if (sender.balance < convertedAmountFromSenderCurrency) {
+        setError("Insufficient funds in sender's account");
+        return;
+      }
+
+      const newSenderBalance =
+        sender.balance - convertedAmountFromSenderCurrency;
+
+      let convertedAmountToReceiverCurrency = amount;
+      if (currency !== receiver.currency) {
+        convertedAmountToReceiverCurrency = convertCurrency(
+          exchangeRates,
+          currency,
+          receiver.currency,
+          amount
+        );
+      }
+
+      const newReceiverBalance =
+        receiver.balance + convertedAmountToReceiverCurrency;
+
+      const updatedSender: Account = {
+        ...sender,
+        balance: newSenderBalance,
+        historyBalance: updateHistoryBalance(sender, newSenderBalance),
+      };
+
+      const updatedReceiver: Account = {
+        ...receiver,
+        balance: newReceiverBalance,
+        historyBalance: updateHistoryBalance(receiver, newReceiverBalance),
+      };
+
+      await editAccount(updatedSender);
+      await editAccount(updatedReceiver);
+    } catch (err) {
+      setError((err as Error).message);
+    }
   };
 
-  return useMutation<TransactionResult, Error, FormValues>(mutationFn, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-    },
-    ...options,
-  });
+  return { transferMoney, isEditAccountPending, error };
 };
 
 export default useFundTransfer;

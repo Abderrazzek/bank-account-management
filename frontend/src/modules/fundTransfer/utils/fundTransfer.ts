@@ -27,7 +27,6 @@ export function convertCurrency(
   return convertedValue;
 }
 
-// TODO CONFIRM THIS AND IT'S EMPLACEMENT
 export const fetchConversionRates = async (): Promise<ExchangeRates> => {
   const response = await axios.get(process.env.CURRENCY_EXCHANGE_API!);
   return response.data;

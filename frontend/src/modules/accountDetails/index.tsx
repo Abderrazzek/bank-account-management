@@ -1,43 +1,34 @@
-import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Heading } from "@chakra-ui/react";
+import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Heading, Spinner } from "@chakra-ui/react";
 import Form from "./components/Form";
 import LineChart from "./components/LineChart";
+import { useAccountDetails, useQuery } from "./hooks";
 
-interface AccountDetailsProps {
-  // Define props here
-}
-
-const AccountDetails: React.FC<AccountDetailsProps> = (props) => {
-  const { state } = useLocation();
+const AccountDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  console.log("=====id", id);
+  const { account, isPending, isError } = useAccountDetails(
+    parseInt(id || "0", 10)
+  );
   const navigate = useNavigate();
+  const query = useQuery();
+  const mode = query.get("mode");
 
-  useEffect(() => {
-    if (!state)
-      // TODO CALL API TO GET ACCOUNT/ID AND REDIRECT IF IT DOESN'T EXIT
-      // TODO REMOVE THE STATE SENT ON NAVIGATION AND HANDLE IT ONLY WITH THE API WAY
-      navigate(`/accounts`);
-  }, []);
+  if (isError) navigate("/accounts");
 
-  // Add component logic here
-  // TODO: REDIRECT TO '/' IF THE ID IS UNDEFINED OR ISDESABLED=TRUE
-  const onSubmit = (values: any) => {
-    // TODO HANDLE SUBMIT HERE API CALL
-    window.alert(JSON.stringify(values, null, 2));
-  };
+  const onSubmit = (values: any) => {};
 
-  return (
+  return isPending ? (
+    <Spinner />
+  ) : (
     <div>
       <Heading fontWeight="medium" size="md">
         Account Details
       </Heading>
-      <Form
-        onSubmit={onSubmit}
-        data={state.data}
-        isReadOnly={state.isReadOnly}
-      />
-      {state?.data?.historyBalance?.length > 1 && (
-        <LineChart data={state?.data?.historyBalance} />
+      <Form onSubmit={onSubmit} data={account} isReadOnly={mode === "view"} />
+      {account && account.historyBalance?.length > 1 && (
+        <LineChart data={account.historyBalance} />
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 export interface FormValues {
-  sender: number;
-  receiver: number;
+  senderId: number;
+  receiverId: number;
   currency: string;
   amount: number;
 }
