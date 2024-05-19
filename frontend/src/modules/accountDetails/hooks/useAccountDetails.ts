@@ -9,6 +9,7 @@ import {
 import axios from "services/axios";
 import { AxiosResponse } from "axios";
 import { Account } from "shared/constants";
+import { updateHistoryBalance } from "shared/utils";
 
 // Fetch account details
 type UseAccountDetailsResult = UseQueryResult<Account, AxiosResponse> & {
@@ -47,8 +48,26 @@ export const useEditAccount = (
     isPending: isEditAccountPending,
     ...rest
   } = useMutation<AxiosResponse, unknown, Account>({
-    mutationFn: (updatedAccount: Account) =>
-      axios.put(`/accounts/${updatedAccount.id}`, updatedAccount),
+    mutationFn: async (updatedAccount: Account) => {
+      // Call updateHistoryBalance to get the updated history balance
+      const updatedHistoryBalance = await updateHistoryBalance(
+        updatedAccount.historyBalance,
+        updatedAccount.balance,
+        updatedAccount.currency
+      );
+
+      // Update the account with the new history balance
+      const accountWithUpdatedHistory = {
+        ...updatedAccount,
+        historyBalance: updatedHistoryBalance,
+      };
+
+      // Proceed with the mutation to update the account
+      return axios.put(
+        `/accounts/${accountWithUpdatedHistory.id}`,
+        accountWithUpdatedHistory
+      );
+    },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["account", variables.id] });
@@ -76,13 +95,13 @@ export const useDeleteAccount = (
 
   const {
     mutate: deleteAccount,
-    isPending: isDeleteAccountPending,
+    isPending: isDeleteAccountPending, // Use the correct key for loading state
     ...rest
   } = useMutation<AxiosResponse, unknown, number>({
-    mutationFn: (id: number) => axios.delete(`/accounts/${id}`),
-    onSuccess: (_, variables) => {
+    mutationFn: (id: number) =>
+      axios.patch(`/accounts/${id}`, { isDeleted: "true" }), // Update to set isDeleted to true
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
-      queryClient.removeQueries({ queryKey: ["account", variables] });
     },
     ...options,
   });

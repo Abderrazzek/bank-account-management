@@ -22,11 +22,13 @@ interface Props {
 }
 
 const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
-  const { accounts, isLoading } = useAccounts();
+  const { accounts, isLoading } = useAccounts(
+    isDeletedAccounts ? "true" : "false"
+  );
   const { deleteAccount, isDeleteAccountPending } = useDeleteAccount();
 
   const { isOpen, toggle } = useModal();
-  // TODO CHECK IT
+  // TODO REMOVE PROVIDER AND READ IT FROM URL
   const { selectedAccountId } = useSelectedAccount();
   const { defaultColDef, colDefs } = usePagination();
   const navigate = useNavigate();

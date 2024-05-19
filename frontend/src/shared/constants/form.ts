@@ -10,6 +10,7 @@ export const initialValues: Account = {
   currency: "EUR",
   historyBalance: [],
   balance: 0,
+  isDeleted: "false",
 };
 
 export const validationSchema = Yup.object({

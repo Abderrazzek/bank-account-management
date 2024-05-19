@@ -17,7 +17,6 @@ import { useDeleteAccount, useEditAccount } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import Spinner from "shared/components/Spinner";
 import { handleRefresh } from "../utils";
-import { updateHistoryBalance } from "shared/utils";
 
 type FormProps = {
   isReadOnly?: boolean;
@@ -41,24 +40,16 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
 
   const formikProps = {
     initialValues: data || initialValues,
-    onSubmit: async (values: Account) => {
-      const valuesUpdated = {
-        ...values,
-        historyBalance: await updateHistoryBalance(
-          data!.historyBalance,
-          values.balance,
-          values.currency
-        ),
-      };
-      setEditedValues(valuesUpdated);
+    onSubmit: (values: Account) => {
+      setEditedValues(values);
       toggleEdit();
     },
     validationSchema,
     enableReinitialize: true,
   };
 
-  const handleEditModalConfirm = () => {
-    editAccount(editedValues!);
+  const handleEditModalConfirm = async () => {
+    await editAccount(editedValues!);
     toggleEdit();
     handleRefresh();
   };
@@ -153,14 +144,14 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
       {editedValues && (
         <ConfirmationModal
           isOpen={isEditOpen}
-          onClose={() => toggleEdit()}
+          onClose={toggleEdit}
           text="Are you sure you want to submit changes?"
           onConfirm={handleEditModalConfirm}
         />
       )}
       <ConfirmationModal
         isOpen={isDeleteOpen}
-        onClose={() => toggleDelete()}
+        onClose={toggleDelete}
         text="Do you really want to delete this account?"
         confirmBtnText="Delete"
         onConfirm={handleDeleteModalConfirm}

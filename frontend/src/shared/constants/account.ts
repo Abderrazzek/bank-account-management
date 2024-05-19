@@ -8,5 +8,5 @@ export interface Account {
   currency: CurrencyCode;
   balance: number;
   historyBalance: Record<string, string | number>[];
-  isDeleted?: boolean;
+  isDeleted?: string;
 }

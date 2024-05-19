@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ExchangeRates } from "shared/constants";
+import { format } from "date-fns";
 
 export function convertCurrency(
   exchangeRates: ExchangeRates,
@@ -36,6 +37,7 @@ export const updateHistoryBalance = async (
   newBalance: number,
   currency: string
 ): Promise<Record<string, string | number>[]> => {
+  console.log("hahahahahahaha", format(new Date(), "MMM dd"));
   // Fetch exchange rates
   const exchangeRates = await fetchConversionRates();
 
@@ -50,9 +52,10 @@ export const updateHistoryBalance = async (
   if (!lastEntry || lastEntry.balance !== eurBalance) {
     // If the balances don't match or there are no previous entries, add a new entry
     const newEntry = {
-      date: new Date().toISOString(),
+      date: format(new Date(), "MMM dd"),
       balance: eurBalance,
     };
+    console.log("=====", newEntry);
     return [...historyBalance, newEntry];
   }
   // If the balances match, return the existing history

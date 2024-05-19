@@ -14,10 +14,10 @@ type UseAccountsResult = UseQueryResult<Account[], AxiosResponse> & {
   accounts: Account[];
 };
 
-export const useAccounts = (): UseAccountsResult => {
+export const useAccounts = (isDeleted: string = "false"): UseAccountsResult => {
   const accountsQueryResult = useQuery<Account[], AxiosResponse>({
     queryKey: ["accounts"],
-    queryFn: () => axios.get("/accounts"),
+    queryFn: () => axios.get(`/accounts?isDeleted=${isDeleted}`),
   });
 
   return {
@@ -45,7 +45,8 @@ export const useDeleteAccount = (
     isPending: isDeleteAccountPending, // Correct key is `isLoading`
     ...rest
   } = useMutation<AxiosResponse, unknown, number>({
-    mutationFn: (id: number) => axios.delete(`/accounts/${id}`),
+    mutationFn: (id: number) =>
+      axios.patch(`/accounts/${id}`, { isDeleted: "true" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
     },
