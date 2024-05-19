@@ -1,7 +1,7 @@
 import { CurrencyCode } from "shared/models";
 
 export interface Account {
-  id: number;
+  id: string;
   ownerId: number;
   firstName: string;
   lastName: string;

@@ -29,23 +29,23 @@ export const useAccounts = (isDeleted: string = "false"): UseAccountsResult => {
 type UseDeleteAccountResult = UseMutationResult<
   AxiosResponse,
   unknown,
-  number
+  string
 > & {
-  deleteAccount: (id: number) => void;
+  deleteAccount: (id: string) => void;
   isDeleteAccountPending: boolean;
 };
 
 export const useDeleteAccount = (
-  options?: UseMutationOptions<AxiosResponse, unknown, number>
+  options?: UseMutationOptions<AxiosResponse, unknown, string>
 ): UseDeleteAccountResult => {
   const queryClient = useQueryClient();
 
   const {
     mutate: deleteAccount,
-    isPending: isDeleteAccountPending, // Correct key is `isLoading`
+    isPending: isDeleteAccountPending,
     ...rest
-  } = useMutation<AxiosResponse, unknown, number>({
-    mutationFn: (id: number) =>
+  } = useMutation<AxiosResponse, unknown, string>({
+    mutationFn: (id: string) =>
       axios.patch(`/accounts/${id}`, { isDeleted: "true" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["accounts"] });

@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { Account } from "shared/constants";
 
 export const initialValues: Account = {
-  id: 0,
+  id: "0",
   ownerId: 0,
   firstName: "",
   lastName: "",

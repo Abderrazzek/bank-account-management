@@ -1,37 +1,27 @@
 import * as Yup from "yup";
-import { FormValues } from "../models";
 
-export const initialValues: FormValues = {
-  senderId: 0,
-  receiverId: 0,
+export const initialValues = {
+  senderId: "",
+  receiverId: "",
   currency: "",
   amount: 0,
 };
 
 export const validationSchema = Yup.object({
-  sender: Yup.number()
-    .required()
-    .test(
-      "notSameAsReceiver",
-      "Sender and receiver cannot be the same account",
-      function (value) {
-        const receiver = this.parent.receiver;
-        return value !== receiver;
-      }
+  senderId: Yup.string()
+    .required("Sender ID is required")
+    .min(1, "Sender ID must be at least 1 character long"),
+  receiverId: Yup.string()
+    .required("Receiver ID is required")
+    .min(1, "Receiver ID must be at least 1 character long")
+    .notOneOf(
+      [Yup.ref("senderId")],
+      "Sender and receiver IDs must be different"
     ),
-  receiver: Yup.number()
-    .required()
-    .test(
-      "notSameAsSender",
-      "Sender and receiver cannot be the same account",
-      function (value) {
-        const sender = this.parent.sender;
-        return value !== sender;
-      }
-    ),
-  currency: Yup.string().required(),
+  currency: Yup.string()
+    .required("Currency is required")
+    .length(3, "Currency must be 3 characters long"),
   amount: Yup.number()
-    .required()
-    .min(0)
-    .moreThan(0, "Amount must be greater than 0"),
+    .required("Amount is required")
+    .min(1, "Amount must be greater than or equal to 0"),
 });

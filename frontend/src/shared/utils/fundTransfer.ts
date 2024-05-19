@@ -1,6 +1,6 @@
-import axios from "axios";
 import { ExchangeRates } from "shared/constants";
 import { format } from "date-fns";
+import axios from "services/axios";
 
 export function convertCurrency(
   exchangeRates: ExchangeRates,
@@ -28,7 +28,9 @@ export function convertCurrency(
 }
 
 export const fetchConversionRates = async (): Promise<ExchangeRates> => {
-  const response = await axios.get(process.env.CURRENCY_EXCHANGE_API!);
+  const response = await axios.get(
+    process.env.REACT_APP_CURRENCY_EXCHANGE_API!
+  );
   return response.data;
 };
 
@@ -37,10 +39,8 @@ export const updateHistoryBalance = async (
   newBalance: number,
   currency: string
 ): Promise<Record<string, string | number>[]> => {
-  console.log("hahahahahahaha", format(new Date(), "MMM dd"));
   // Fetch exchange rates
   const exchangeRates = await fetchConversionRates();
-
   // Convert new balance to EUR if the currency is not already EUR
   let eurBalance = newBalance;
   if (currency !== "EUR") {
@@ -55,7 +55,6 @@ export const updateHistoryBalance = async (
       date: format(new Date(), "MMM dd"),
       balance: eurBalance,
     };
-    console.log("=====", newEntry);
     return [...historyBalance, newEntry];
   }
   // If the balances match, return the existing history

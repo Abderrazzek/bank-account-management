@@ -19,12 +19,12 @@ import Spinner from "shared/components/Spinner";
 
 const FundTransfer: React.FC = () => {
   const { isOpen, toggle } = useModal();
-  const [formValues, setFormValues] = React.useState<FormValues | null>(null);
+  const [formValues, setFormValues] = React.useState<FormValues>(initialValues);
   const { accounts, isLoading } = useAccounts();
-  const accoutsId = getAccountIds(accounts);
+  const accountsId = getAccountIds(accounts);
 
   const { transferMoney, isEditAccountPending, error } = useFundTransfer(
-    formValues as FormValues
+    formValues || initialValues
   );
 
   const onSubmit = (values: FormValues, helpers: FormikHelpers<FormValues>) => {
@@ -37,70 +37,78 @@ const FundTransfer: React.FC = () => {
     toggle();
     transferMoney();
   };
-
   return isEditAccountPending ? (
     <Spinner />
   ) : (
     <>
       <Formik
-        initialValues={initialValues}
+        initialValues={
+          {
+            ...initialValues,
+            senderId: accountsId?.[0],
+            receiverId: accountsId?.[0],
+          } as any
+        }
         onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleSubmit, isValid }) => (
-          <Box
-            borderWidth="1px"
-            rounded="lg"
-            shadow="1px 1px 3px rgba(0,0,0,0.3)"
-            maxWidth={800}
-            p={6}
-            m="10px auto"
-            as="form"
-            onSubmit={handleSubmit}
-          >
-            <SelectControl
-              name="senderId"
-              label="Sender"
-              selectProps={{ placeholder: "Select account" }}
+        {({ handleSubmit, isValid }) => {
+          console.log("==sds=", isValid);
+          return (
+            <Box
+              borderWidth="1px"
+              rounded="lg"
+              shadow="1px 1px 3px rgba(0,0,0,0.3)"
+              maxWidth={800}
+              p={6}
+              m="10px auto"
+              as="form"
+              onSubmit={handleSubmit}
             >
-              {accoutsId.map((id) => (
-                <option key={id} value={id}>
-                  Account {id}
-                </option>
-              ))}
-            </SelectControl>
-            <SelectControl
-              name="receiverId"
-              label="Receiver"
-              selectProps={{ placeholder: "Select account" }}
-            >
-              {accoutsId.map((id) => (
-                <option key={id} value={id}>
-                  Account {id}
-                </option>
-              ))}
-            </SelectControl>
-            <SelectControl
-              name="currency"
-              label="Currency"
-              selectProps={{ placeholder: "Select currency" }}
-            >
-              {currencies.map((currency: CurrencyInfo) => (
-                <option key={currency.code} value={currency.code}>
-                  {`${currency.code} - ${currency.country}`}
-                </option>
-              ))}
-            </SelectControl>
-            <NumberInputControl name="amount" label="Amount" />
+              <SelectControl
+                name="senderId"
+                label="Sender"
+                selectProps={{ placeholder: "Select account" }}
+              >
+                {accountsId.map((id) => (
+                  <option key={id} value={id}>
+                    Account {id}
+                  </option>
+                ))}
+              </SelectControl>
+              <SelectControl
+                name="receiverId"
+                label="Receiver"
+                selectProps={{ placeholder: "Select account" }}
+              >
+                {accountsId.map((id) => (
+                  <option key={id} value={id}>
+                    Account {id}
+                  </option>
+                ))}
+              </SelectControl>
+              <SelectControl
+                name="currency"
+                label="Currency"
+                selectProps={{ placeholder: "Select currency" }}
+              >
+                {currencies.map((currency: CurrencyInfo) => (
+                  <option key={currency.code} value={currency.code}>
+                    {`${currency.code} - ${currency.country}`}
+                  </option>
+                ))}
+              </SelectControl>
+              <NumberInputControl name="amount" label="Amount" />
 
-            <ButtonGroup>
-              <SubmitButton isDisabled={!isValid || isEditAccountPending}>
-                Submit
-              </SubmitButton>
-              <ResetButton>Reset</ResetButton>
-            </ButtonGroup>
-          </Box>
-        )}
+              <ButtonGroup>
+                <SubmitButton isDisabled={isEditAccountPending}>
+                  Submit
+                </SubmitButton>
+                <ResetButton>Reset</ResetButton>
+              </ButtonGroup>
+            </Box>
+          );
+        }}
       </Formik>
       <ConfirmationModal
         text="Are you sure you want to proceed with this fund transfer?"

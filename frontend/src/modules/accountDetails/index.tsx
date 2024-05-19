@@ -8,9 +8,8 @@ import Spinner from "shared/components/Spinner";
 
 const AccountDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { account, isPending, isError } = useAccountDetails(
-    parseInt(id || "0", 10)
-  );
+
+  const { account, isPending, isError } = useAccountDetails(id || "0");
   const navigate = useNavigate();
   const query = useQuery();
   const mode = query.get("mode");

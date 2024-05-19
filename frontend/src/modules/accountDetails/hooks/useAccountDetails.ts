@@ -16,7 +16,7 @@ type UseAccountDetailsResult = UseQueryResult<Account, AxiosResponse> & {
   account: Account | undefined;
 };
 
-export const useAccountDetails = (id: number): UseAccountDetailsResult => {
+export const useAccountDetails = (id: string): UseAccountDetailsResult => {
   const accountQueryResult = useQuery<Account, AxiosResponse>({
     queryKey: ["account", id],
     queryFn: () => axios.get(`/accounts/${id}`),
@@ -49,13 +49,11 @@ export const useEditAccount = (
     ...rest
   } = useMutation<AxiosResponse, unknown, Account>({
     mutationFn: async (updatedAccount: Account) => {
-      // Call updateHistoryBalance to get the updated history balance
       const updatedHistoryBalance = await updateHistoryBalance(
         updatedAccount.historyBalance,
         updatedAccount.balance,
         updatedAccount.currency
       );
-
       // Update the account with the new history balance
       const accountWithUpdatedHistory = {
         ...updatedAccount,
@@ -82,24 +80,24 @@ export const useEditAccount = (
 type UseDeleteAccountResult = UseMutationResult<
   AxiosResponse,
   unknown,
-  number
+  string
 > & {
-  deleteAccount: (id: number) => void;
+  deleteAccount: (id: string) => void;
   isDeleteAccountPending: boolean;
 };
 
 export const useDeleteAccount = (
-  options?: UseMutationOptions<AxiosResponse, unknown, number>
+  options?: UseMutationOptions<AxiosResponse, unknown, string>
 ): UseDeleteAccountResult => {
   const queryClient = useQueryClient();
 
   const {
     mutate: deleteAccount,
-    isPending: isDeleteAccountPending, // Use the correct key for loading state
+    isPending: isDeleteAccountPending,
     ...rest
-  } = useMutation<AxiosResponse, unknown, number>({
-    mutationFn: (id: number) =>
-      axios.patch(`/accounts/${id}`, { isDeleted: "true" }), // Update to set isDeleted to true
+  } = useMutation<AxiosResponse, unknown, string>({
+    mutationFn: (id: string) =>
+      axios.patch(`/accounts/${id}`, { isDeleted: "true" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
     },

@@ -16,7 +16,6 @@ import { useModal } from "shared/hooks/useModal";
 import { useDeleteAccount, useEditAccount } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import Spinner from "shared/components/Spinner";
-import { handleRefresh } from "../utils";
 
 type FormProps = {
   isReadOnly?: boolean;
@@ -51,7 +50,6 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
   const handleEditModalConfirm = async () => {
     await editAccount(editedValues!);
     toggleEdit();
-    handleRefresh();
   };
 
   const handleDeleteModalConfirm = () => {

@@ -9,6 +9,7 @@ import { useDeleteAccount } from "../hooks";
 const TableActionButtons: React.FC<{
   data: Account;
 }> = ({ data }) => {
+  console.log("=====data", data.id);
   const location = useLocation();
   const navigate = useNavigate();
   const { isOpen, toggle } = useModal();
