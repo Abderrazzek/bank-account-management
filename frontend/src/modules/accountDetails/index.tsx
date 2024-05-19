@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Heading, Spinner } from "@chakra-ui/react";
+import { Heading } from "@chakra-ui/react";
 import Form from "./components/Form";
 import LineChart from "./components/LineChart";
 import { useAccountDetails, useQuery } from "./hooks";
+import Spinner from "shared/components/Spinner";
 
 const AccountDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  console.log("=====id", id);
   const { account, isPending, isError } = useAccountDetails(
     parseInt(id || "0", 10)
   );

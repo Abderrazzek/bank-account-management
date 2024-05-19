@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Box, Spinner } from "@chakra-ui/react";
+import { Button, Box } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
@@ -15,17 +15,16 @@ import {
 import { useSelectedAccount } from "../context";
 import { useModal } from "shared/hooks/useModal";
 import ConfirmationModal from "shared/components/Modal";
+import Spinner from "shared/components/Spinner";
 
 interface Props {
   isDeletedAccounts?: boolean;
 }
 
 const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
-  // TODO STATES AS GROUPED CUSTOM HOOKS
   const { accounts, isLoading } = useAccounts();
   const { deleteAccount, isDeleteAccountPending } = useDeleteAccount();
 
-  // TODO HANDLE STATES WITH CUSTOM HOOKS
   const { isOpen, toggle } = useModal();
   // TODO CHECK IT
   const { selectedAccountId } = useSelectedAccount();

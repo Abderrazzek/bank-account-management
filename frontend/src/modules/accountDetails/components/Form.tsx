@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button, ButtonGroup, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex } from "@chakra-ui/react";
 import { Formik } from "formik";
 import {
   InputControl,
@@ -16,6 +16,7 @@ import { initialValues, validationSchema } from "../constants";
 import { useModal } from "shared/hooks/useModal";
 import { useDeleteAccount, useEditAccount } from "../hooks";
 import { useNavigate } from "react-router-dom";
+import Spinner from "shared/components/Spinner";
 
 type FormProps = {
   isReadOnly?: boolean;
@@ -39,7 +40,6 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
   const formikProps = {
     initialValues: data || initialValues,
     onSubmit: (values: Account) => {
-      console.log("======", values);
       setEditedValues(values);
       editAccount(values);
       toggleEdit();
@@ -58,7 +58,7 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
             borderWidth="1px"
             rounded="lg"
             shadow="1px 1px 3px rgba(0,0,0,0.3)"
-            maxWidth={800}
+            width="100%"
             p={6}
             m="10px auto"
             as="form"
@@ -120,9 +120,8 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
               label="Balance"
               isReadOnly={isReadOnly}
             />
-
             {!isReadOnly && (
-              <ButtonGroup>
+              <ButtonGroup mt={5}>
                 <SubmitButton
                   isDisabled={!isValid || !dirty}
                   isLoading={isEditOpen}

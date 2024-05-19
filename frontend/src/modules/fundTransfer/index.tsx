@@ -1,4 +1,4 @@
-import { Box, ButtonGroup, Spinner } from "@chakra-ui/react";
+import { Box, ButtonGroup } from "@chakra-ui/react";
 import { Formik, FormikHelpers } from "formik";
 import {
   NumberInputControl,
@@ -15,6 +15,7 @@ import useFundTransfer from "./hooks/useFundTransfer";
 import { useAccounts } from "modules/accounts/hooks";
 import { getAccountIds } from "./utils";
 import { useModal } from "shared/hooks/useModal";
+import Spinner from "shared/components/Spinner";
 
 const FundTransfer: React.FC = () => {
   const { isOpen, toggle } = useModal();
