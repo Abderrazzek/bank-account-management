@@ -17,7 +17,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     <Card>
       <CardHeader pb="0">
         <Heading as="h4" fontWeight="medium" size="md">
-          Revenue over time
+          Revenue over time in EUR
         </Heading>
       </CardHeader>
       <CardBody>

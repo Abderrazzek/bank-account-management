@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { ExchangeRates, FormValues } from "../models";
+import { FormValues } from "../models";
 import {
   useAccountDetails,
   useEditAccount,
 } from "modules/accountDetails/hooks";
+import { Account, ExchangeRates } from "shared/constants";
 import {
   convertCurrency,
   fetchConversionRates,
   updateHistoryBalance,
-} from "../utils";
-import { Account } from "shared/constants";
+} from "shared/utils";
 
 const useFundTransfer = (formValues: FormValues) => {
   const { senderId, receiverId, currency, amount } = formValues;
@@ -76,13 +76,21 @@ const useFundTransfer = (formValues: FormValues) => {
       const updatedSender: Account = {
         ...sender,
         balance: newSenderBalance,
-        historyBalance: updateHistoryBalance(sender, newSenderBalance),
+        historyBalance: await updateHistoryBalance(
+          sender.historyBalance,
+          newSenderBalance,
+          currency
+        ),
       };
 
       const updatedReceiver: Account = {
         ...receiver,
         balance: newReceiverBalance,
-        historyBalance: updateHistoryBalance(receiver, newReceiverBalance),
+        historyBalance: await updateHistoryBalance(
+          receiver.historyBalance,
+          newReceiverBalance,
+          currency
+        ),
       };
 
       await editAccount(updatedSender);
