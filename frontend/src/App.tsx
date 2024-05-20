@@ -20,12 +20,10 @@ const App = () => {
             <Route path="/accounts/:id" Component={AccountDetails} />
             <Route path="/new-account" Component={NewAccount} />
             <Route path="/fund-transfer" Component={FundTransfer} />
-            {/* TODO: ADD PARAMS TO WORKS AS DELETED ACCOUNTS */}
             <Route
               path="/deleted-accounts"
               element={<Accounts isDeletedAccounts />}
             />
-            {/* TODO: ADD PARAMS TO WORKS AS DELETED ACCOUNTS */}
             <Route path="/deleted-accounts/:id" Component={AccountDetails} />
             <Route path="*" element={<Navigate to="/accounts" replace />} />
           </Routes>

@@ -24,7 +24,6 @@
   },
   "scripts": {
     "accounts-test": "browserstack-node-sdk jest src/accounts.test.js",
-    "sample-local-test": "browserstack-node-sdk jest src/sample-local.test.js",
     "postinstall": "npm update browserstack-node-sdk"
   }
 }

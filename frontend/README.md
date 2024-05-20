@@ -29,10 +29,20 @@ Develop a web application for bank accounts management, so accounts can be manag
 
 ## Run the app:
 
-You need JSON Server to run the app. Install JSON Server globally if you haven't already:
+You need JSON Server to run the app. Install JSON Server globally if you have it already:
 
 ### `npm install -g json-server`
 
-In the frontend directory, you can run:
+In the `frontend` directory, you can run:
 
 ### `npm run dev`
+
+db.json represents our data base
+
+## Testing
+
+Under the folder e2e you will find our testing implementation.
+Update `browserstack.yml` with your stack to be able to run the tests scenarios.
+To run the test, under `e2e` directory, you can run:
+
+### `npm run accounts-test`

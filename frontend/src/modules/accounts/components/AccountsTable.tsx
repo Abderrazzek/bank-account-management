@@ -27,7 +27,6 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
   const { deleteAccount, isDeleteAccountPending } = useDeleteAccount();
 
   const { isOpen, toggle } = useModal();
-  // TODO REMOVE PROVIDER AND READ IT FROM URL
   const { id } = useParams();
   const { defaultColDef, colDefs } = usePagination();
   const navigate = useNavigate();
