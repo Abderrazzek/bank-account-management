@@ -9,13 +9,18 @@ export const getAccountIds = (accounts: Account[]): string[] => {
     .map((account) => account.id);
 };
 
+const getAccountById = (id: string): Promise<Account> =>
+  axios.get(`/accounts/${id}`);
+
 export const fundTransfer = async (
-  data: FormValues,
+  formValues: FormValues,
   editAccount: (updatedAccount: Account) => void
 ) => {
-  const { receiverId, senderId, currency, amount } = data;
-  const receiver: Account = await axios.get(`/accounts/${receiverId}`);
-  const sender: Account = await axios.get(`/accounts/${senderId}`);
+  const { receiverId, senderId, currency, amount } = formValues;
+  const [receiver, sender] = await Promise.all([
+    getAccountById(receiverId),
+    getAccountById(senderId),
+  ]);
   if (sender) {
     let amountInSenderCurrency = parseFloat(amount as any);
 
@@ -31,9 +36,7 @@ export const fundTransfer = async (
     }
     const floatSenderBalance = parseFloat(sender.balance as any);
     if (amountInSenderCurrency > floatSenderBalance) {
-      alert(
-        "Error, Sender Account don't have enough money to make this transaction!"
-      );
+      alert("Error: Insufficient funds in the sender's account.");
       return;
     }
     if (receiver) {
@@ -66,9 +69,9 @@ export const fundTransfer = async (
       };
       editAccount(newSenderValues);
       editAccount(newReceiverValues);
-      alert("Fund Transfer successfuly! ");
+      alert("Fund transfer completed successfully.");
     }
   } else {
-    alert("Fatal!, an error occured, Try again please.");
+    alert("Error: An unexpected error occurred. Please try again.");
   }
 };
