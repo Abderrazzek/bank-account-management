@@ -12,7 +12,6 @@ import {
 } from "shared/utils";
 
 const useFundTransfer = (formValues: FormValues) => {
-  console.log("====5ra", formValues);
   const { senderId, receiverId, currency, amount } = formValues;
   const { account: sender } = useAccountDetails(senderId);
   const { account: receiver } = useAccountDetails(receiverId);

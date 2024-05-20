@@ -103,7 +103,10 @@ const SidebarContent = ({ onClose, location, ...rest }: SidebarProps) => {
           key={link.name}
           icon={link.icon}
           to={link.to}
-          selected={location.pathname.startsWith(link.to)}
+          selected={
+            location.pathname.startsWith(link.to) ||
+            (link.to === "/accounts" && location.pathname === "/new-account")
+          }
         >
           {link.name}
         </NavItem>

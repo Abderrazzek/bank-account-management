@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Heading } from "@chakra-ui/react";
+import { Card, CardBody, CardHeader, Flex, Heading } from "@chakra-ui/react";
 import { LineChart as SaaSLineChart } from "@saas-ui/charts";
 
 type LineChartProps = {
@@ -16,9 +16,11 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
   return (
     <Card>
       <CardHeader pb="0">
-        <Heading as="h4" fontWeight="medium" size="md">
-          Revenue over time in EUR
-        </Heading>
+        <Flex justify="center" align="center" width="100%">
+          <Heading as="h4" fontWeight="medium" size="md">
+            Revenue over time in EUR
+          </Heading>
+        </Flex>
       </CardHeader>
       <CardBody>
         <SaaSLineChart

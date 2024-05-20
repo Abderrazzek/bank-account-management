@@ -14,15 +14,16 @@ const AccountDetails: React.FC = () => {
   const query = useQuery();
   const mode = query.get("mode");
 
+  // In case the account id is wrong, we go back to accounts page
   if (isError) navigate("/accounts");
 
   return isPending ? (
     <Spinner />
   ) : (
     <div>
-      <Heading fontWeight="medium" size="md">
+      {/* <Heading fontWeight="medium" size="md">
         Account Details
-      </Heading>
+      </Heading> */}
       <Form data={account} isReadOnly={mode === "view"} />
       {account && account.historyBalance?.length > 1 && (
         <LineChart data={account.historyBalance} />

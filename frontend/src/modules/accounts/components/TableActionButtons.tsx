@@ -3,13 +3,12 @@ import { FiEye, FiEdit, FiTrash } from "react-icons/fi";
 import { useNavigate, useLocation } from "react-router-dom";
 import ConfirmationModal from "shared/components/Modal";
 import { Account } from "shared/constants";
-import { useModal } from "shared/hooks/useModal";
 import { useDeleteAccount } from "../hooks";
+import { useModal } from "shared/hooks";
 
 const TableActionButtons: React.FC<{
   data: Account;
 }> = ({ data }) => {
-  console.log("=====data", data.id);
   const location = useLocation();
   const navigate = useNavigate();
   const { isOpen, toggle } = useModal();

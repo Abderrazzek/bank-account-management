@@ -12,10 +12,10 @@ import {
 import { CurrencyInfo, currencies } from "shared/models";
 import ConfirmationModal from "shared/components/Modal";
 import { Account, initialValues, validationSchema } from "shared/constants";
-import { useModal } from "shared/hooks/useModal";
 import { useDeleteAccount, useEditAccount } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import Spinner from "shared/components/Spinner";
+import { useModal } from "shared/hooks";
 
 type FormProps = {
   isReadOnly?: boolean;
@@ -69,7 +69,7 @@ const Form: React.FC<FormProps> = ({ isReadOnly = true, data }) => {
             borderWidth="1px"
             rounded="lg"
             shadow="1px 1px 3px rgba(0,0,0,0.3)"
-            width="100%"
+            maxWidth="800px"
             p={6}
             m="10px auto"
             as="form"

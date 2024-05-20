@@ -12,10 +12,9 @@ import { CurrencyInfo, currencies } from "shared/models";
 import { initialValues, validationSchema } from "./constants";
 import { FormValues } from "./models";
 import useFundTransfer from "./hooks/useFundTransfer";
-import { useAccounts } from "modules/accounts/hooks";
-import { useModal } from "shared/hooks/useModal";
 import Spinner from "shared/components/Spinner";
 import { useAccountIdsMapper } from "./hooks/useAccountMapper";
+import { useAccounts, useModal } from "shared/hooks";
 
 const FundTransfer: React.FC = () => {
   const { isOpen, toggle } = useModal();

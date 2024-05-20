@@ -4,7 +4,7 @@ import { FiPlus } from "react-icons/fi";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { useAccounts, useDeleteAccount } from "../hooks";
+import { useDeleteAccount } from "../hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePagination } from "../hooks";
 import {
@@ -12,9 +12,9 @@ import {
   paginationPageSize,
   paginationPageSizeSelector,
 } from "../constants";
-import { useModal } from "shared/hooks/useModal";
 import ConfirmationModal from "shared/components/Modal";
 import Spinner from "shared/components/Spinner";
+import { useAccounts, useModal } from "shared/hooks";
 
 interface Props {
   isDeletedAccounts?: boolean;
