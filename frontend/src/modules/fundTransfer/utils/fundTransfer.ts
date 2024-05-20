@@ -1,5 +1,3 @@
-import { AxiosResponse } from "axios";
-
 import { Account } from "shared/constants";
 import { FormValues } from "../models";
 import { convertCurrency, fetchConversionRates } from "shared/utils";
@@ -19,7 +17,7 @@ export const fundTransfer = async (
   const receiver: Account = await axios.get(`/accounts/${receiverId}`);
   const sender: Account = await axios.get(`/accounts/${senderId}`);
   if (sender) {
-    let amountInSenderCurrency = amount;
+    let amountInSenderCurrency = parseFloat(amount as any);
 
     const exchangeRates = await fetchConversionRates();
 
@@ -28,40 +26,42 @@ export const fundTransfer = async (
         exchangeRates,
         currency,
         sender.currency,
-        amount
+        amountInSenderCurrency
       );
     }
-
-    if (parseFloat(amountInSenderCurrency as any) > sender.balance) {
+    const floatSenderBalance = parseFloat(sender.balance as any);
+    if (amountInSenderCurrency > floatSenderBalance) {
       alert(
         "Error, Sender Account don't have enough money to make this transaction!"
       );
       return;
     }
     if (receiver) {
-      let amountInReceiverCurrency = amount;
+      let amountInReceiverCurrency = parseFloat(amount as any);
 
       if (receiver?.currency !== currency) {
         amountInReceiverCurrency = convertCurrency(
           exchangeRates,
           currency,
           receiver.currency,
-          amount
+          amountInReceiverCurrency
         );
       }
       const newSenderValues = {
         ...sender,
-        balance:
-          parseFloat(sender.balance as any) -
-          parseFloat(amountInSenderCurrency as any),
+        balance: floatSenderBalance - parseFloat(amountInSenderCurrency as any),
       };
       const newReceiverValues = {
         ...receiver,
-        balance: receiver.balance + amountInReceiverCurrency,
+        balance:
+          parseFloat(receiver.balance as any) +
+          parseFloat(amountInReceiverCurrency as any),
       };
       editAccount(newSenderValues);
       editAccount(newReceiverValues);
+      alert("Fund Transfer successfuly! ");
     }
+  } else {
+    alert("Fatal!, an error occured, Try again please.");
   }
-  alert("Fatal!, an error occured, Try again please.");
 };

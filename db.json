@@ -9,10 +9,10 @@
       "historyBalance": [
         {
           "date": "May 20",
-          "balance": 0
+          "balance": 102
         }
       ],
-      "balance": 0,
+      "balance": 102,
       "isDeleted": "false"
     },
     {
@@ -24,10 +24,10 @@
       "historyBalance": [
         {
           "date": "May 20",
-          "balance": 104
+          "balance": 2
         }
       ],
-      "balance": "104",
+      "balance": 2,
       "isDeleted": "false"
     }
   ]
