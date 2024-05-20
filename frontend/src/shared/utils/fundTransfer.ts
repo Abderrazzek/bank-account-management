@@ -46,10 +46,10 @@ export const updateHistoryBalance = async (
   if (currency !== "EUR") {
     eurBalance = convertCurrency(exchangeRates, currency, "EUR", newBalance);
   }
-
+  console.log("000000", { newBalance, eurBalance });
   // Check if the last entry's balance matches the new balance
   const lastEntry = historyBalance[historyBalance.length - 1];
-  if (!lastEntry || lastEntry.balance !== eurBalance) {
+  if (!lastEntry) {
     // If the balances don't match or there are no previous entries, add a new entry
     const newEntry = {
       date: format(new Date(), "MMM dd"),

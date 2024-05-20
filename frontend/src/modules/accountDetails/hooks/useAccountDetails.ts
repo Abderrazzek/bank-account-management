@@ -59,7 +59,6 @@ export const useEditAccount = (
         ...updatedAccount,
         historyBalance: updatedHistoryBalance,
       };
-
       // Proceed with the mutation to update the account
       return axios.put(
         `/accounts/${accountWithUpdatedHistory.id}`,

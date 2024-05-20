@@ -51,8 +51,7 @@ const FundTransfer: React.FC = () => {
         onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleSubmit, isValid }) => {
-          console.log("==sds=", isValid);
+        {({ handleSubmit }) => {
           return (
             <Box
               borderWidth="1px"
