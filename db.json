@@ -1,41 +1,33 @@
 {
   "accounts": [
     {
-      "id": "2",
-      "ownerId": "2",
-      "firstName": "fd",
-      "lastName": "sdaf",
+      "id": "1",
+      "ownerId": "1",
+      "firstName": "Aberrazek",
+      "lastName": "Younsi",
       "currency": "EUR",
       "historyBalance": [
         {
-          "date": "May 10",
-          "balance": 34
-        },
-        {
-          "date": "May 15",
-          "balance": 34
+          "date": "May 20",
+          "balance": 0
         }
       ],
-      "balance": "34",
+      "balance": 0,
       "isDeleted": "false"
     },
     {
-      "id": "3",
-      "ownerId": "1",
-      "firstName": "Abderrazek",
-      "lastName": "YOUNSI",
+      "id": "2",
+      "ownerId": "2",
+      "firstName": "Peter",
+      "lastName": "Chapter",
       "currency": "EUR",
       "historyBalance": [
         {
-          "date": "May 10",
-          "balance": 3
-        },
-        {
           "date": "May 20",
-          "balance": 10
+          "balance": 104
         }
       ],
-      "balance": "10",
+      "balance": "104",
       "isDeleted": "false"
     }
   ]

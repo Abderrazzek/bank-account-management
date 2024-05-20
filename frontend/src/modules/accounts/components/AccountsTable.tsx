@@ -46,6 +46,7 @@ const AccountsTable: React.FC<Props> = ({ isDeletedAccounts = false }) => {
             colorScheme="teal"
             leftIcon={<FiPlus />}
             onClick={handleNewAccountClick}
+            id="create-new-account-btn"
           >
             Create New Account
           </Button>

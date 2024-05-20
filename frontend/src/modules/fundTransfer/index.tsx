@@ -13,13 +13,16 @@ import { initialValues, validationSchema } from "./constants";
 import { FormValues } from "./models";
 import Spinner from "shared/components/Spinner";
 import { useAccounts, useModal } from "shared/hooks";
-import { useAccountIdsMapper, useFundTransfer } from "./hooks";
+import { useAccountIdsMapper } from "./hooks";
+import { useEditAccount } from "modules/accountDetails/hooks";
+import { fundTransfer } from "./utils";
 
 const FundTransfer: React.FC = () => {
   const { isOpen, toggle } = useModal();
   const [formValues, setFormValues] = React.useState<FormValues>(initialValues);
   const { accounts } = useAccounts();
   const accountsId = useAccountIdsMapper(accounts);
+  const { editAccount } = useEditAccount();
 
   const onSubmit = (values: FormValues, helpers: FormikHelpers<FormValues>) => {
     setFormValues(values);
@@ -28,7 +31,7 @@ const FundTransfer: React.FC = () => {
   };
 
   const handleConfirmation = async () => {
-    // useFundTransfer(formValues);
+    fundTransfer(formValues, editAccount);
     toggle();
   };
   return (

@@ -36,6 +36,7 @@ const NewAccount: React.FC = () => {
       <Formik {...formikProps}>
         {({ handleSubmit, isValid, dirty }) => (
           <Box
+            id="new-account-form"
             borderWidth="1px"
             rounded="lg"
             shadow="1px 1px 3px rgba(0,0,0,0.3)"
@@ -64,6 +65,7 @@ const NewAccount: React.FC = () => {
               <SubmitButton
                 isDisabled={!isValid || !dirty}
                 isLoading={isAddAccountPending}
+                id="submit-new-account-btn"
               >
                 Submit
               </SubmitButton>
