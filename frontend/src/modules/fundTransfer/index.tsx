@@ -11,10 +11,9 @@ import ConfirmationModal from "shared/components/Modal";
 import { CurrencyInfo, currencies } from "shared/models";
 import { initialValues, validationSchema } from "./constants";
 import { FormValues } from "./models";
-import useFundTransfer from "./hooks/useFundTransfer";
 import Spinner from "shared/components/Spinner";
-import { useAccountIdsMapper } from "./hooks/useAccountMapper";
 import { useAccounts, useModal } from "shared/hooks";
+import { useAccountIdsMapper, useFundTransfer } from "./hooks";
 
 const FundTransfer: React.FC = () => {
   const { isOpen, toggle } = useModal();
@@ -22,23 +21,17 @@ const FundTransfer: React.FC = () => {
   const { accounts } = useAccounts();
   const accountsId = useAccountIdsMapper(accounts);
 
-  const { transferMoney, isEditAccountPending } = useFundTransfer(
-    formValues || initialValues
-  );
-
   const onSubmit = (values: FormValues, helpers: FormikHelpers<FormValues>) => {
     setFormValues(values);
     toggle();
     helpers.setSubmitting(false);
   };
 
-  const handleConfirmation = () => {
+  const handleConfirmation = async () => {
+    // useFundTransfer(formValues);
     toggle();
-    transferMoney();
   };
-  return isEditAccountPending ? (
-    <Spinner />
-  ) : (
+  return (
     <>
       <Formik
         initialValues={
@@ -99,9 +92,7 @@ const FundTransfer: React.FC = () => {
               <NumberInputControl name="amount" label="Amount to transfer" />
 
               <ButtonGroup mt={5}>
-                <SubmitButton isDisabled={isEditAccountPending}>
-                  Submit
-                </SubmitButton>
+                <SubmitButton>Submit</SubmitButton>
                 <ResetButton>Reset</ResetButton>
               </ButtonGroup>
             </Box>

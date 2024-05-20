@@ -1,106 +1,56 @@
-import { useEffect, useState } from "react";
-import { FormValues } from "../models";
 import {
   useAccountDetails,
   useEditAccount,
 } from "modules/accountDetails/hooks";
-import { Account, ExchangeRates } from "shared/constants";
-import {
-  convertCurrency,
-  fetchConversionRates,
-  updateHistoryBalance,
-} from "shared/utils";
+import { FormValues } from "../models";
+import { convertCurrency, fetchConversionRates } from "shared/utils";
 
-const useFundTransfer = (formValues: FormValues) => {
-  const { senderId, receiverId, currency, amount } = formValues;
-  const { account: sender } = useAccountDetails(senderId);
+export const useFundTransfer = async (data: FormValues) => {
+  const { receiverId, senderId, currency, amount } = data;
   const { account: receiver } = useAccountDetails(receiverId);
-  const { editAccount, isEditAccountPending } = useEditAccount();
+  const { account: sender } = useAccountDetails(senderId);
+  const { editAccount } = useEditAccount();
+  if (sender) {
+    let amountInSenderCurrency = amount;
 
-  const [exchangeRates, setExchangeRates] = useState<ExchangeRates | null>(
-    null
-  );
-  const [error, setError] = useState<string | null>(null);
+    const exchangeRates = await fetchConversionRates();
 
-  useEffect(() => {
-    const fetchRates = async () => {
-      try {
-        const rates = await fetchConversionRates();
-        setExchangeRates(rates);
-      } catch (err) {
-        setError((err as Error).message);
-      }
-    };
-
-    fetchRates();
-  }, []);
-
-  const transferMoney = async () => {
-    if (!sender || !receiver || !exchangeRates) {
-      setError("Account details or exchange rates are not available");
+    if (sender.currency !== currency) {
+      amountInSenderCurrency = convertCurrency(
+        exchangeRates,
+        currency,
+        sender.currency,
+        amount
+      );
+    }
+    if (amountInSenderCurrency > sender.balance) {
+      alert(
+        "Error, Sender Account don't have enough money to make this transaction!"
+      );
       return;
     }
+    if (receiver) {
+      let amountInReceiverCurrency = amount;
 
-    try {
-      let convertedAmountFromSenderCurrency = amount;
-      if (currency !== sender.currency) {
-        convertedAmountFromSenderCurrency = convertCurrency(
-          exchangeRates,
-          currency,
-          sender.currency,
-          amount
-        );
-      }
-
-      if (sender.balance < convertedAmountFromSenderCurrency) {
-        setError("Insufficient funds in sender's account");
-        return;
-      }
-
-      const newSenderBalance =
-        sender.balance - convertedAmountFromSenderCurrency;
-
-      let convertedAmountToReceiverCurrency = amount;
-      if (currency !== receiver.currency) {
-        convertedAmountToReceiverCurrency = convertCurrency(
+      if (receiver?.currency !== currency) {
+        amountInReceiverCurrency = convertCurrency(
           exchangeRates,
           currency,
           receiver.currency,
           amount
         );
       }
-
-      const newReceiverBalance =
-        receiver.balance + convertedAmountToReceiverCurrency;
-
-      const updatedSender: Account = {
+      const newSenderValues = {
         ...sender,
-        balance: newSenderBalance,
-        historyBalance: await updateHistoryBalance(
-          sender.historyBalance,
-          newSenderBalance,
-          currency
-        ),
+        balance: sender.balance - amountInSenderCurrency,
       };
-
-      const updatedReceiver: Account = {
+      const newReceiverValues = {
         ...receiver,
-        balance: newReceiverBalance,
-        historyBalance: await updateHistoryBalance(
-          receiver.historyBalance,
-          newReceiverBalance,
-          currency
-        ),
+        balance: receiver.balance + amountInReceiverCurrency,
       };
-
-      await editAccount(updatedSender);
-      await editAccount(updatedReceiver);
-    } catch (err) {
-      setError((err as Error).message);
+      editAccount(newSenderValues);
+      editAccount(newReceiverValues);
     }
-  };
-
-  return { transferMoney, isEditAccountPending, error };
+  }
+  alert("Fatal!, an error occured, Try again please.");
 };
-
-export default useFundTransfer;
