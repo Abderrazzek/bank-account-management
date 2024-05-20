@@ -49,13 +49,20 @@ export const fundTransfer = async (
       }
       const newSenderValues = {
         ...sender,
-        balance: floatSenderBalance - parseFloat(amountInSenderCurrency as any),
+        balance: parseFloat(
+          (
+            floatSenderBalance - parseFloat(amountInSenderCurrency as any)
+          ).toFixed(2)
+        ),
       };
       const newReceiverValues = {
         ...receiver,
-        balance:
-          parseFloat(receiver.balance as any) +
-          parseFloat(amountInReceiverCurrency as any),
+        balance: parseFloat(
+          (
+            parseFloat(receiver.balance as any) +
+            parseFloat(amountInReceiverCurrency as any)
+          ).toFixed(2)
+        ),
       };
       editAccount(newSenderValues);
       editAccount(newReceiverValues);
