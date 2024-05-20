@@ -35,6 +35,8 @@ You need JSON Server to run the app. Install JSON Server globally if you have it
 
 In the `frontend` directory, you can run:
 
+### `npm install`
+
 ### `npm run dev`
 
 db.json represents our data base
@@ -44,5 +46,7 @@ db.json represents our data base
 Under the folder e2e you will find our testing implementation.
 Update `browserstack.yml` with your credential to be able to run the tests scenarios.
 To run the test, under `e2e` directory, you can run:
+
+### `npm install`
 
 ### `npm run accounts-test`
