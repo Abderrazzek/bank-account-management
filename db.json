@@ -1,63 +1,110 @@
 {
   "accounts": [
     {
-      "id": "2",
-      "ownerId": "2",
-      "firstName": "Peter",
-      "lastName": "Chapter",
+      "id": "1",
+      "ownerId": "1",
+      "firstName": "Sarah",
+      "lastName": "Lavo",
       "currency": "EUR",
       "historyBalance": [
         {
+          "date": "May 18",
+          "balance": 100
+        },
+        {
+          "date": "May 19",
+          "balance": 80
+        },
+        {
           "date": "May 20",
-          "balance": 13.92
+          "balance": 64.32
+        },
+        {
+          "date": "May 21",
+          "balance": 55
         }
       ],
-      "balance": 13.92,
+      "balance": 55,
+      "isDeleted": "false"
+    },
+    {
+      "id": "2",
+      "ownerId": "2",
+      "firstName": "Sofia",
+      "lastName": "Rute",
+      "currency": "GBP",
+      "historyBalance": [
+        {
+          "date": "May 21",
+          "balance": 1752.16
+        }
+      ],
+      "balance": 1500,
       "isDeleted": "false"
     },
     {
       "id": "3",
-      "ownerId": "2",
-      "firstName": "afdjkl",
-      "lastName": "fajksld;",
+      "ownerId": "3",
+      "firstName": "Jack",
+      "lastName": "Bowl",
       "currency": "USD",
       "historyBalance": [
         {
           "date": "May 21",
-          "balance": 16.55
+          "balance": 312.61
         }
       ],
-      "balance": 18,
-      "isDeleted": "false"
+      "balance": 340,
+      "isDeleted": "true"
     },
     {
       "id": "4",
-      "ownerId": "7",
-      "firstName": "afsdjlk",
-      "lastName": "jafsdk;",
-      "currency": "USD",
+      "ownerId": "4",
+      "firstName": "Selena",
+      "lastName": "Beyo",
+      "currency": "CHF",
       "historyBalance": [
         {
           "date": "May 21",
-          "balance": 0.36
+          "balance": 224.55
         }
       ],
-      "balance": 0.39,
+      "balance": 222,
       "isDeleted": "false"
     },
     {
       "id": "5",
-      "ownerId": "8",
-      "firstName": "jsd",
-      "lastName": "fsd",
+      "ownerId": "5",
+      "firstName": "Lin",
+      "lastName": "Sparrow",
       "currency": "EUR",
       "historyBalance": [
         {
+          "date": "May 15",
+          "balance": 554
+        },
+        {
+          "date": "May 17",
+          "balance": 632.32
+        },
+        {
+          "date": "May 18",
+          "balance": 610.02
+        },
+        {
+          "date": "May 19",
+          "balance": 605
+        },
+        {
+          "date": "May 20",
+          "balance": 580
+        },
+        {
           "date": "May 21",
-          "balance": 16
+          "balance": 572.29
         }
       ],
-      "balance": 16,
+      "balance": 572.29,
       "isDeleted": "false"
     }
   ]
