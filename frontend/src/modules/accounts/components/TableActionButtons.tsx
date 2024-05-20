@@ -3,7 +3,7 @@ import { FiEye, FiEdit, FiTrash } from "react-icons/fi";
 import { useNavigate, useLocation } from "react-router-dom";
 import ConfirmationModal from "shared/components/Modal";
 import { Account } from "shared/constants";
-import { useDeleteAccount } from "../hooks";
+import { useDeleteAccount, usePermanentDeleteAccount } from "../hooks";
 import { useModal } from "shared/hooks";
 
 const TableActionButtons: React.FC<{
@@ -11,9 +11,11 @@ const TableActionButtons: React.FC<{
 }> = ({ data }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isOpen, toggle } = useModal();
+  const { isOpen: isDeleteOpen, toggle: toggleDelete } = useModal();
+  const { isOpen: isPermanentDeleteOpen, toggle: togglePermanentDelete } =
+    useModal();
   const { deleteAccount } = useDeleteAccount();
-
+  const { permanentDeleteAccount } = usePermanentDeleteAccount();
   const handleViewClick = () => {
     navigate(`${location.pathname}/${data.id}?mode=view`);
   };
@@ -22,9 +24,14 @@ const TableActionButtons: React.FC<{
     navigate(`/accounts/${data.id}`);
   };
 
-  const handleModalConfirm = () => {
+  const handleDeleteModalConfirm = () => {
     deleteAccount(data!.id);
-    toggle();
+    toggleDelete();
+  };
+
+  const handlePermanentDeleteModalConfirm = () => {
+    permanentDeleteAccount(data!.id);
+    togglePermanentDelete();
   };
 
   return (
@@ -51,16 +58,35 @@ const TableActionButtons: React.FC<{
             leftIcon={<FiTrash />}
             size="sm"
             variant="link"
-            onClick={toggle}
+            onClick={toggleDelete}
           >
             Delete
           </Button>
           <ConfirmationModal
-            isOpen={isOpen}
-            onClose={toggle}
-            text="Do you really want to delete this account?"
+            isOpen={isDeleteOpen}
+            onClose={toggleDelete}
+            text="Are you sure you want to delete this account? This action will mark the account as deleted. The account will still be accessible for viewing but cannot be used for any transactions."
             confirmBtnText="Delete"
-            onConfirm={handleModalConfirm}
+            onConfirm={handleDeleteModalConfirm}
+          />
+        </>
+      )}
+      {location.pathname === "/deleted-accounts" && (
+        <>
+          <Button
+            leftIcon={<FiTrash />}
+            size="sm"
+            variant="link"
+            onClick={togglePermanentDelete}
+          >
+            Permanent Delete
+          </Button>
+          <ConfirmationModal
+            isOpen={isPermanentDeleteOpen}
+            onClose={togglePermanentDelete}
+            text="Are you sure you want to permanently delete this account? This action cannot be undone and you will lose all associated data."
+            confirmBtnText="Delete"
+            onConfirm={handlePermanentDeleteModalConfirm}
           />
         </>
       )}

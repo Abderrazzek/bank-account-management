@@ -40,3 +40,36 @@ export const useDeleteAccount = (
     ...rest,
   } as UseDeleteAccountResult;
 };
+
+type UsePermanentDeleteAccountResult = UseMutationResult<
+  AxiosResponse,
+  unknown,
+  string
+> & {
+  permanentDeleteAccount: (id: string) => void;
+  isPermanentDeleteAccountPending: boolean;
+};
+
+export const usePermanentDeleteAccount = (
+  options?: UseMutationOptions<AxiosResponse, unknown, string>
+): UsePermanentDeleteAccountResult => {
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: permanentDeleteAccount,
+    isPending: isPermanentDeleteAccountPending,
+    ...rest
+  } = useMutation<AxiosResponse, unknown, string>({
+    mutationFn: (id: string) => axios.delete(`/accounts/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+    },
+    ...options,
+  });
+
+  return {
+    permanentDeleteAccount,
+    isPermanentDeleteAccountPending,
+    ...rest,
+  } as UsePermanentDeleteAccountResult;
+};
