@@ -98,7 +98,7 @@ const FundTransfer: React.FC = () => {
               </SelectControl>
               <NumberInputControl name="amount" label="Amount" />
 
-              <ButtonGroup>
+              <ButtonGroup mt={5}>
                 <SubmitButton isDisabled={isEditAccountPending}>
                   Submit
                 </SubmitButton>
