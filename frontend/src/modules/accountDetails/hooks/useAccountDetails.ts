@@ -57,6 +57,7 @@ export const useEditAccount = (
       // Update the account with the new history balance
       const accountWithUpdatedHistory = {
         ...updatedAccount,
+        balance: parseFloat(updatedAccount.balance as any),
         historyBalance: updatedHistoryBalance,
       };
       // Proceed with the mutation to update the account

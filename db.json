@@ -1,21 +1,6 @@
 {
   "accounts": [
     {
-      "id": "1",
-      "ownerId": "1",
-      "firstName": "Aberrazek",
-      "lastName": "Younsi",
-      "currency": "EUR",
-      "historyBalance": [
-        {
-          "date": "May 20",
-          "balance": 96.08
-        }
-      ],
-      "balance": 96.08,
-      "isDeleted": "false"
-    },
-    {
       "id": "2",
       "ownerId": "2",
       "firstName": "Peter",
@@ -28,6 +13,51 @@
         }
       ],
       "balance": 13.92,
+      "isDeleted": "false"
+    },
+    {
+      "id": "3",
+      "ownerId": "2",
+      "firstName": "afdjkl",
+      "lastName": "fajksld;",
+      "currency": "USD",
+      "historyBalance": [
+        {
+          "date": "May 21",
+          "balance": 16.55
+        }
+      ],
+      "balance": 18,
+      "isDeleted": "false"
+    },
+    {
+      "id": "4",
+      "ownerId": "7",
+      "firstName": "afsdjlk",
+      "lastName": "jafsdk;",
+      "currency": "USD",
+      "historyBalance": [
+        {
+          "date": "May 21",
+          "balance": 0.36
+        }
+      ],
+      "balance": 0.39,
+      "isDeleted": "false"
+    },
+    {
+      "id": "5",
+      "ownerId": "8",
+      "firstName": "jsd",
+      "lastName": "fsd",
+      "currency": "EUR",
+      "historyBalance": [
+        {
+          "date": "May 21",
+          "balance": 16
+        }
+      ],
+      "balance": 16,
       "isDeleted": "false"
     }
   ]

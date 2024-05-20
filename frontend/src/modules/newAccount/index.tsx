@@ -23,7 +23,11 @@ const NewAccount: React.FC = () => {
   const formikProps = {
     initialValues,
     onSubmit: async (values: Account) => {
-      await addAccount(values);
+      const newVAlues = {
+        ...values,
+        balance: parseFloat(values.balance as any),
+      };
+      await addAccount(newVAlues);
       navigate("/accounts");
     },
     validationSchema,
