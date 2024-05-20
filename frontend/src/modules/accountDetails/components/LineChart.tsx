@@ -8,7 +8,7 @@ type LineChartProps = {
 const valueFormatter = (value: number): string => {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "USD",
+    currency: "EUR",
   }).format(value);
 };
 
@@ -18,14 +18,14 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
       <CardHeader pb="0">
         <Flex justify="center" align="center" width="100%">
           <Heading as="h4" fontWeight="medium" size="md">
-            Revenue over time in EUR
+            Balance over time in EUR
           </Heading>
         </Flex>
       </CardHeader>
       <CardBody>
         <SaaSLineChart
           data={data}
-          categories={["Revenue"]}
+          categories={["balance"]}
           valueFormatter={valueFormatter}
           yAxisWidth={80}
           colors={["blue"]}

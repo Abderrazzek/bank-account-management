@@ -53,7 +53,7 @@ export const updateHistoryBalance = async (
     // If the balances don't match or there are no previous entries, add a new entry
     const newEntry = {
       date: format(new Date(), "MMM dd"),
-      balance: eurBalance,
+      balance: eurBalance.toFixed(2),
     };
     return [...historyBalance, newEntry];
   }
