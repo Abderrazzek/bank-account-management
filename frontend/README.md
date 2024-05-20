@@ -42,7 +42,7 @@ db.json represents our data base
 ## Testing
 
 Under the folder e2e you will find our testing implementation.
-Update `browserstack.yml` with your stack to be able to run the tests scenarios.
+Update `browserstack.yml` with your credential to be able to run the tests scenarios.
 To run the test, under `e2e` directory, you can run:
 
 ### `npm run accounts-test`
