@@ -16,11 +16,7 @@ import { useAddAccount } from "./hooks";
 
 import { useNavigate } from "react-router-dom";
 
-type NewAccountProps = {
-  onSubmit?: (values: Account) => void;
-};
-
-const NewAccount: React.FC<NewAccountProps> = ({ onSubmit }) => {
+const NewAccount: React.FC = () => {
   const { addAccount, isAddAccountPending } = useAddAccount();
   const navigate = useNavigate();
 

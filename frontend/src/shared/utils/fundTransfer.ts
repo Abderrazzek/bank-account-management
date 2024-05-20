@@ -36,26 +36,41 @@ export const fetchConversionRates = async (): Promise<ExchangeRates> => {
 
 export const updateHistoryBalance = async (
   historyBalance: Record<string, string | number>[],
-  newBalance: number,
+  newBalance: number | string,
   currency: string
 ): Promise<Record<string, string | number>[]> => {
+  // Ensure newBalance is treated as a number
+  let balance =
+    typeof newBalance === "string" ? parseFloat(newBalance) : newBalance;
+
   // Fetch exchange rates
   const exchangeRates = await fetchConversionRates();
   // Convert new balance to EUR if the currency is not already EUR
-  let eurBalance = newBalance;
+  let eurBalance = balance;
   if (currency !== "EUR") {
-    eurBalance = convertCurrency(exchangeRates, currency, "EUR", newBalance);
+    eurBalance = convertCurrency(exchangeRates, currency, "EUR", balance);
   }
-  console.log("000000", { newBalance, eurBalance });
+
+  // Format the balance to 2 decimal places
+  eurBalance = parseFloat(eurBalance.toFixed(2));
+
   // Check if the last entry's balance matches the new balance
   const lastEntry = historyBalance[historyBalance.length - 1];
-  if (!lastEntry) {
+  const currentDate = format(new Date(), "MMM dd");
+  if (!lastEntry || lastEntry.balance !== eurBalance) {
     // If the balances don't match or there are no previous entries, add a new entry
     const newEntry = {
-      date: format(new Date(), "MMM dd"),
-      balance: eurBalance.toFixed(2),
+      date: currentDate,
+      balance: eurBalance,
     };
-    return [...historyBalance, newEntry];
+
+    // If the last entry has the same date, update it
+    if (lastEntry && lastEntry.date === currentDate) {
+      historyBalance[historyBalance.length - 1] = newEntry;
+      return [...historyBalance];
+    } else {
+      return [...historyBalance, newEntry];
+    }
   }
   // If the balances match, return the existing history
   return historyBalance;
