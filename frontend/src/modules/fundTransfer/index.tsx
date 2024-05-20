@@ -65,23 +65,23 @@ const FundTransfer: React.FC = () => {
             >
               <SelectControl
                 name="senderId"
-                label="Sender"
+                label="Sender Account"
                 selectProps={{ placeholder: "Select account" }}
               >
                 {accountsId.map((id) => (
                   <option key={id} value={id}>
-                    Account {id}
+                    {id}
                   </option>
                 ))}
               </SelectControl>
               <SelectControl
                 name="receiverId"
-                label="Receiver"
+                label="Receiver Account"
                 selectProps={{ placeholder: "Select account" }}
               >
                 {accountsId.map((id) => (
                   <option key={id} value={id}>
-                    Account {id}
+                    {id}
                   </option>
                 ))}
               </SelectControl>
@@ -96,7 +96,7 @@ const FundTransfer: React.FC = () => {
                   </option>
                 ))}
               </SelectControl>
-              <NumberInputControl name="amount" label="Amount" />
+              <NumberInputControl name="amount" label="Amount to transfer" />
 
               <ButtonGroup mt={5}>
                 <SubmitButton isDisabled={isEditAccountPending}>
